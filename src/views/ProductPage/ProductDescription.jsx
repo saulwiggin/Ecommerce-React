@@ -51,6 +51,7 @@ const styles = {
 class ProductDescription extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       tl: false,
       tc: false,
@@ -68,21 +69,28 @@ class ProductDescription extends React.Component {
     }
   }
 
+  componentDidMount(){
+
+  }
+
+
   render() {
     const { classes, picture, selectedproduct } = this.props;
+
     return (
+      this.transferPropsTo(
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card plain>
             <CardHeader plain color="primary">
-              <h2> {selectedproduct.productname} </h2>
+              <h2>  </h2>
             </CardHeader>
             <CardBody>
             <GridItem xs={12} sm={12} md={6}>
-              <img src={selectedproduct.img} className={selectedproduct.img} alt="complex" />
+
             </GridItem>
             <GridItem xs={12} sm={12} md={6}>
-              <p> {selectedproduct.description} </p>
+              
               <Button tag={Link} to="/basket" />
               <Link to="/basket">Buy</Link>
               <Route
@@ -94,6 +102,7 @@ class ProductDescription extends React.Component {
           </Card>
         </GridItem>
       </GridContainer>
+      )
     );
   }
 }

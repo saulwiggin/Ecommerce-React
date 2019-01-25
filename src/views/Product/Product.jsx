@@ -83,18 +83,12 @@ class Product extends React.Component {
 
   //fetch products from API
   componentDidMount(){
-    fetch('https://pricesearcher-frontend-test.herokuapp.com/',{
-      method: 'GET',
-      headers: {
-        'Content-Type': "application/json",
-        'X-API-KEY': "46c0a1e171c76bb37784d60aad4df750"
-      }
-    })
-    .then (results => {
-      console.log(results);
-    }).catch( error => {
-      console.log(error);
-    })
+    // fetch('https://pricesearcher-frontend-test.herokuapp.com/',{
+    //   method: 'GET',
+    //   headers: {
+    //     'X-API-KEY': "46c0a1e171c76bb37784d60aad4df750"
+    //   }
+    // }).then(response => response.json()).then(data => this.setState({ data: data })).catch(error => this.setState({ error, isLoading: false }));
 
     fetch('https://randomuser.me/api/?results=500')
     .then (results => {
@@ -102,11 +96,14 @@ class Product extends React.Component {
       this.setState({results: results});
       return results.json();
     }).then(data => {
+      console.log(data.results);
       let pictures = data.results.map((pic) => {
         return(
           <div key={pic.results}>
-            <ComplexGrid pictures={pic.picture.medium}>
+          <GridItem xs={12} sm={12} md={10} lg={8}>
+            <ComplexGrid pictures={pic.picture.medium} data={pic}>
             </ComplexGrid>
+          </GridItem>
         </div>
         )
       })
@@ -115,12 +112,13 @@ class Product extends React.Component {
       this.setState({rowsPerPage: 5});
 
       console.log("state", this.state.pictures);
+      console.log(this.state);
     })
   }
 
    redirectProductDescription = () => {
     console.log('function clicked');
-
+    console.log('link to product description');
   }
 
   render() {
@@ -137,7 +135,7 @@ class Product extends React.Component {
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                      <TableRow key={results} onClick={this.redirectProductDescription}>
+                      <TableRow key={results} onClick={this.redirectProductDescription} >
                       <TableCell component="th" scope="row">
                       </TableCell>
                       <TableCell align="right"></TableCell>

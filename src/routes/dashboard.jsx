@@ -17,6 +17,8 @@ import Maps from "views/Maps/Maps.jsx";
 import NotificationsPage from "views/Notifications/Notifications.jsx";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.jsx";
 import Product from "views/Product/Product.jsx";
+import ProductDescription from "views/ProductPage/ProductDescription.jsx";
+import Basket from "views/Basket/Basket.jsx";
 
 const dashboardRoutes = [
   // {
@@ -40,20 +42,20 @@ const dashboardRoutes = [
     icon: "content_paste",
     component: Product
    },
-  // {
-  //   path: "/typography",
-  //   sidebarName: "Blog",
-  //   navbarName: "Blog",
-  //   icon: LibraryBooks,
-  //   component: Typography
-  // },
-  // {
-  //   path: "/icons",
-  //   sidebarName: "News",
-  //   navbarName: "News",
-  //   icon: BubbleChart,
-  //   component: Icons
-  // },
+  {
+    path: "/ProductDescription",
+    sidebarName: "Product Description",
+    navbarName: "Product Description",
+    icon: ProductDescription,
+    component: Typography
+  },
+  {
+    path: "/Basket",
+    sidebarName: "Basket",
+    navbarName: "Basket",
+    icon: Basket,
+    component: Icons
+  },
   // {
   //   path: "/maps",
   //   sidebarName: "Location",

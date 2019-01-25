@@ -44,7 +44,7 @@ function AddProductToBasket(info){
 }
 
 function ComplexGrid(props) {
-  const { classes, pictures } = props;
+  const { classes, pictures,data } = props;
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -58,17 +58,17 @@ function ComplexGrid(props) {
             <Grid item xs container direction="column" spacing={16}>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle1">
-                  Standard license
+                  {data.name.phone}
                 </Typography>
-                <Typography gutterBottom>Full resolution 1920x1080 • JPEG</Typography>
-                <Typography color="textSecondary">ID: 1030114</Typography>
+                <Typography gutterBottom>{data.name.title} {data.name.first} {data.name.last}</Typography>
+                <Typography color="textSecondary">{data.id.value}</Typography>
               </Grid>
               <Grid item>
                 <Typography style={{ cursor: 'pointer' }}>Add To Basket</Typography>
                 <Link to="/ProductDescription">Product Description</Link>
                 <Route
                   path="/Description"
-                  render={props => <ProductDescription {...props} extra={pictures} />}
+                  render={props => <ProductDescription />}
                 />              </Grid>
             </Grid>
             <Grid item>
