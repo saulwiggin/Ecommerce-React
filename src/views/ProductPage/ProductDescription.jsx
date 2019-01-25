@@ -75,10 +75,9 @@ class ProductDescription extends React.Component {
 
 
   render() {
-    const { classes, picture, selectedproduct } = this.props;
+    const { classes, picture } = this.props;
 
     return (
-      this.transferPropsTo(
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card plain>
@@ -90,7 +89,7 @@ class ProductDescription extends React.Component {
 
             </GridItem>
             <GridItem xs={12} sm={12} md={6}>
-              
+
               <Button tag={Link} to="/basket" />
               <Link to="/basket">Buy</Link>
               <Route
@@ -102,7 +101,6 @@ class ProductDescription extends React.Component {
           </Card>
         </GridItem>
       </GridContainer>
-      )
     );
   }
 }
