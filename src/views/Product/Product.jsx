@@ -42,6 +42,7 @@ import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
+import Popover from '@material-ui/core/Popover';
 
 import ComplexGrid from "components/ComplexGrid/ComplexGrid.jsx";
 import ProductDescription from "components/ComplexGrid/ComplexGrid.jsx";
@@ -64,7 +65,8 @@ class Product extends React.Component {
   constructor(){
     super();
     this.state = {
-      products: []
+      products: [],
+      anchorEl: null
     };
   }
 
@@ -79,6 +81,14 @@ class Product extends React.Component {
 
   handleChangeIndex = index => {
     this.setState({ value: index });
+  };
+
+  handlePopoverOpen = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handlePopoverClose = () => {
+    this.setState({ anchorEl: null });
   };
 
   componentDidMount(){
@@ -126,8 +136,9 @@ class Product extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { rows, rowsPerPage, page, pictures, results } = this.state;
+    const { rows, rowsPerPage, page, pictures, results, anchorEl } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, 500 - page * rowsPerPage);
+    const open = Boolean(anchorEl);
     return (
       <div className = "wrapper">
         <div className = "container2">
@@ -139,7 +150,11 @@ class Product extends React.Component {
                 <Table className={classes.table}>
                   <TableBody>
                   this.state.pictures.map( pic => (
-                    <TableRow key={results} onClick={this.redirectProductDescription(pic)} >
+                    <TableRow key={results} onClick={this.redirectProductDescription(pic)}
+                      aria-owns={open ? 'mouse-over-popover' : undefined}
+                      aria-haspopup="true"
+                      onMouseEnter={this.handlePopoverOpen}
+                      onMouseLeave={this.handlePopoverClose}>
                     {pic}
                     </TableRow>
                   ))
@@ -150,6 +165,27 @@ class Product extends React.Component {
                       </TableRow>
                     )}
                   </TableBody>
+                  <Popover
+                   id="mouse-over-popover"
+                   className={classes.popover}
+                   classes={{
+                     paper: classes.paper,
+                   }}
+                   open={open}
+                   anchorEl={anchorEl}
+                   anchorOrigin={{
+                     vertical: 'bottom',
+                     horizontal: 'left',
+                   }}
+                   transformOrigin={{
+                     vertical: 'top',
+                     horizontal: 'left',
+                   }}
+                   onClose={this.handlePopoverClose}
+                   disableRestoreFocus
+                 >
+                   <Typography>I use Popover.</Typography>
+                 </Popover>
                   <TableFooter>
                     <TableRow>
                       <TablePagination
