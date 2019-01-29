@@ -71,10 +71,6 @@ class ProductDescription extends React.Component {
     }
   }
 
-  componentDidMount(){
-
-  }
-
   const WrappedLink = () => {
   return (
     <button>
@@ -89,9 +85,22 @@ class ProductDescription extends React.Component {
 
     return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={6} sm={6} md={6}>
           <Card plain>
-            
+            <Carousel></Carousel>
+          </Card>
+        </GridItem>
+        <GridItem xs={6} sm={6} md={6}>
+          <Card plain>
+            <CardHeader>
+              {picture.name}
+            </CardHeader>
+            <CardBody>
+
+            </CardBody>
+            <CardFooter>
+              <Wrappedlink></WrappedLink>
+            </CardFooter>
           </Card>
         </GridItem>
       </GridContainer>

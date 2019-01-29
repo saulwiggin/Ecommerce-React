@@ -81,16 +81,17 @@ class Product extends React.Component {
     this.setState({ value: index });
   };
 
-  //fetch products from API
   componentDidMount(){
-    // fetch('https://pricesearcher-frontend-test.herokuapp.com/',{
-    //   method: 'GET',
-    //   headers: {
-    //     'X-API-KEY': "46c0a1e171c76bb37784d60aad4df750"
-    //   }
-    // }).then(response => response.json()).then(data => this.setState({ data: data })).catch(error => this.setState({ error, isLoading: false }));
-
-    fetch('https://randomuser.me/api/?results=500')
+    fetch('https://pricesearcher-frontend-test.herokuapp.com/',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application-json',
+        'X-API-KEY': "46c0a1e171c76bb37784d60aad4df750"
+      },
+      body: JSON.stringify(data)
+    })
+    //.then(response => response.json()).then(data => this.setState({ data: data })).catch(error => this.setState({ error, isLoading: false }));
+    //fetch('https://randomuser.me/api/?results=500')
     .then (results => {
       console.log(results);
       this.setState({results: results});
@@ -112,15 +113,15 @@ class Product extends React.Component {
       this.setState({rowsPerPage: 5});
 
       console.log("state", this.state.pictures);
-      console.log(this.state);
     })
   }
 
-  //how can i filter a table - automatically
-
-   redirectProductDescription = () => {
-    console.log('function clicked');
-    console.log('link to product description');
+   redirectProductDescription = (pic) => {
+    <Link to="/ProductDescription">Product Description</Link>
+    <Route
+      path="/ProductDescription"
+      render={pic => <ProductDescription />}
+    />
   }
 
   render() {
@@ -138,7 +139,7 @@ class Product extends React.Component {
                 <Table className={classes.table}>
                   <TableBody>
                   this.state.pictures.map( pic => (
-                    <TableRow key={results} onClick={this.redirectProductDescription} >
+                    <TableRow key={results} onClick={this.redirectProductDescription(pic)} >
                     {pic}
                     </TableRow>
                   ))
