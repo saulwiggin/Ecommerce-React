@@ -116,6 +116,8 @@ class Product extends React.Component {
     })
   }
 
+  //how can i filter a table - automatically
+
    redirectProductDescription = () => {
     console.log('function clicked');
     console.log('link to product description');
@@ -135,13 +137,11 @@ class Product extends React.Component {
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                      <TableRow key={results} onClick={this.redirectProductDescription} >
-                      <TableCell component="th" scope="row">
-                      </TableCell>
-                      <TableCell align="right"></TableCell>
-                      <TableCell align="right"></TableCell>
-                      <TableCell align="right"></TableCell>
-                      {this.state.pictures}
+                  this.state.pictures.map( pic => (
+                    <TableRow key={results} onClick={this.redirectProductDescription} >
+                    {pic}
+                    </TableRow>
+                  ))
                       </TableRow>
                     {emptyRows > 0 && (
                       <TableRow style={{ height: 48 * emptyRows }}>

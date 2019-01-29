@@ -46,15 +46,15 @@ const dashboardRoutes = [
     path: "/ProductDescription",
     sidebarName: "Product Description",
     navbarName: "Product Description",
-    icon: ProductDescription,
-    component: Typography
+    icon: "content_paste",
+    component: ProductDescription
   },
   {
     path: "/Basket",
     sidebarName: "Basket",
     navbarName: "Basket",
-    icon: Basket,
-    component: Icons
+    icon: "content_paste",
+    component: Basket
   },
   // {
   //   path: "/maps",

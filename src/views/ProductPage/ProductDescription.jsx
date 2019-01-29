@@ -15,6 +15,8 @@ import Basket from "components/Grid/GridItem.jsx";
 
 import Hidden from "@material-ui/core/Hidden";
 import Button from '@material-ui/core/Button';
+import Slide from '@material-ui/core/Slide';
+var Carousel = require('react-responsive-carousel').Carousel;
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -73,6 +75,14 @@ class ProductDescription extends React.Component {
 
   }
 
+  const WrappedLink = () => {
+  return (
+    <button>
+      <Link style={{display: 'block', height: '100%'}} .... />
+    </button>
+  )
+}
+
 
   render() {
     const { classes, picture } = this.props;
@@ -81,23 +91,7 @@ class ProductDescription extends React.Component {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card plain>
-            <CardHeader plain color="primary">
-              <h2>  </h2>
-            </CardHeader>
-            <CardBody>
-            <GridItem xs={12} sm={12} md={6}>
-
-            </GridItem>
-            <GridItem xs={12} sm={12} md={6}>
-
-              <Button tag={Link} to="/basket" />
-              <Link to="/basket">Buy</Link>
-              <Route
-                path="/basket"
-                render={props => <Basket />}
-              />
-            </GridItem>
-            </CardBody>
+            
           </Card>
         </GridItem>
       </GridContainer>
