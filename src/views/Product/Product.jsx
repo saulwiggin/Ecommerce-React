@@ -43,6 +43,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import Popover from '@material-ui/core/Popover';
+import Typography from '@material-ui/core/Typography';
 
 import ComplexGrid from "components/ComplexGrid/ComplexGrid.jsx";
 import ProductDescription from "components/ComplexGrid/ComplexGrid.jsx";
@@ -97,8 +98,7 @@ class Product extends React.Component {
       headers: {
         'Content-Type': 'application-json',
         'X-API-KEY': "46c0a1e171c76bb37784d60aad4df750"
-      },
-      body: JSON.stringify(data)
+      }
     })
     //.then(response => response.json()).then(data => this.setState({ data: data })).catch(error => this.setState({ error, isLoading: false }));
     //fetch('https://randomuser.me/api/?results=500')
@@ -127,11 +127,15 @@ class Product extends React.Component {
   }
 
    redirectProductDescription = (pic) => {
-    <Link to="/ProductDescription">Product Description</Link>
-    <Route
-      path="/ProductDescription"
-      render={pic => <ProductDescription />}
-    />
+     return(
+       <div>
+      <Link to="/ProductDescription">Product Description</Link>
+      <Route
+        path="/ProductDescription"
+        render={pic => <ProductDescription />}
+      />
+      </div>
+     )
   }
 
   render() {
@@ -149,7 +153,7 @@ class Product extends React.Component {
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                  this.state.pictures.map( pic => (
+                  {this.state.pictures.map( (pic) => (
                     <TableRow key={results} onClick={this.redirectProductDescription(pic)}
                       aria-owns={open ? 'mouse-over-popover' : undefined}
                       aria-haspopup="true"
@@ -157,13 +161,7 @@ class Product extends React.Component {
                       onMouseLeave={this.handlePopoverClose}>
                     {pic}
                     </TableRow>
-                  ))
-                      </TableRow>
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 48 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )}
+                  }))
                   </TableBody>
                   <Popover
                    id="mouse-over-popover"
