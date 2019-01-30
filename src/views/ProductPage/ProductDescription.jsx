@@ -11,12 +11,15 @@ import Snackbar from "components/Snackbar/Snackbar.jsx";
 import Card from "components/Card/Card.jsx";
 import CardHeader from "components/Card/CardHeader.jsx";
 import CardBody from "components/Card/CardBody.jsx";
+import CardFooter from "components/Card/CardFooter.jsx";
 import Basket from "components/Grid/GridItem.jsx";
 
 import Hidden from "@material-ui/core/Hidden";
 import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
-var Carousel = require('react-responsive-carousel').Carousel;
+//var Carousel = require('react-responsive-carousel').Carousel;
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -71,14 +74,6 @@ class ProductDescription extends React.Component {
     }
   }
 
-  const WrappedLink = () => {
-  return (
-    <button>
-      <Link style={{display: 'block', height: '100%'}} .... />
-    </button>
-  )
-}
-
 
   render() {
     const { classes, picture } = this.props;
@@ -87,7 +82,20 @@ class ProductDescription extends React.Component {
       <GridContainer>
         <GridItem xs={6} sm={6} md={6}>
           <Card plain>
-            <Carousel></Carousel>
+            <Carousel>
+              <div>
+                  <img src={picture.img} />
+                  <p className="legend">Legend 1</p>
+              </div>
+              <div>
+                  <img src="assets/2.jpeg" />
+                  <p className="legend">Legend 2</p>
+              </div>
+              <div>
+                  <img src="assets/3.jpeg" />
+                  <p className="legend">Legend 3</p>
+              </div>
+            </Carousel>
           </Card>
         </GridItem>
         <GridItem xs={6} sm={6} md={6}>
@@ -99,7 +107,9 @@ class ProductDescription extends React.Component {
 
             </CardBody>
             <CardFooter>
-              <Wrappedlink></WrappedLink>
+            <Button component={Basket} to="/basket">
+              Buy
+            </Button>
             </CardFooter>
           </Card>
         </GridItem>

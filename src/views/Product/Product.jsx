@@ -129,11 +129,11 @@ class Product extends React.Component {
    redirectProductDescription = (pic) => {
      return(
        <div>
-      <Link to="/ProductDescription">Product Description</Link>
-      <Route
-        path="/ProductDescription"
-        render={pic => <ProductDescription />}
-      />
+        <Link to="/ProductDescription">Product Description</Link>
+        <Route
+          path="/ProductDescription"
+          render={pic => <ProductDescription />}
+        />
       </div>
      )
   }
@@ -153,15 +153,17 @@ class Product extends React.Component {
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                  {this.state.pictures.map( (pic) => (
-                    <TableRow key={results} onClick={this.redirectProductDescription(pic)}
-                      aria-owns={open ? 'mouse-over-popover' : undefined}
-                      aria-haspopup="true"
-                      onMouseEnter={this.handlePopoverOpen}
-                      onMouseLeave={this.handlePopoverClose}>
-                    {pic}
-                    </TableRow>
-                  }))
+                  {this.state.pictures.map((pic) => (
+                    <div>
+                      <TableRow key={results} onClick={this.redirectProductDescription(pic)}
+                        aria-owns={open ? 'mouse-over-popover' : undefined}
+                        aria-haspopup="true"
+                        onMouseEnter={this.handlePopoverOpen}
+                        onMouseLeave={this.handlePopoverClose}>
+                      {pic}
+                      </TableRow>
+                    </div>
+                  ))}
                   </TableBody>
                   <Popover
                    id="mouse-over-popover"
