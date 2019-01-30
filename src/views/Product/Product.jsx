@@ -50,6 +50,10 @@ import ProductDescription from "components/ComplexGrid/ComplexGrid.jsx";
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import tileData from './tileData';
+
 import { getList } from 'components/Api/Api.js';
 
 import { bugs, website, server } from "variables/general.jsx";
@@ -61,6 +65,20 @@ import {
 } from "variables/charts.jsx";
 
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
+  },
+  gridList: {
+    width: 500,
+    height: 450,
+  },
+});
 
 class Product extends React.Component {
   constructor(){
@@ -206,6 +224,17 @@ class Product extends React.Component {
               </div>
             </Paper>
                 </GridItem>
+                <GridItem xs={12} sm={12} md={10} lg={8}>
+                <div className={classes.root}>
+                  <GridList cellHeight={160} className={classes.gridList} cols={3}>
+                    {tileData.map(tile => (
+                      <GridListTile key={tile.img} cols={tile.cols || 1}>
+                        <img src={tile.img} alt={tile.title} />
+                      </GridListTile>
+                    ))}
+                  </GridList>
+                </div>
+                </GridItem
               </GridContainer>
             </div>
         </div>
