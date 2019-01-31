@@ -7,6 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Icon from '@material-ui/core/Icon';
 
+import { addToCart } from '../actions'
+
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import ProductDescription from 'views/ProductPage/ProductDescription'
@@ -39,8 +41,8 @@ function ClickProductDescription(image){
   )
 }
 
-function AddProductToBasket(info){
-  // add notification to basket and add to state
+function addProductToBasket(info){
+
 }
 
 function ComplexGrid(props) {
@@ -64,12 +66,13 @@ function ComplexGrid(props) {
                 <Typography color="textSecondary">{data.id.value}</Typography>
               </Grid>
               <Grid item>
-                <Typography style={{ cursor: 'pointer' }}>Add To Basket</Typography>
+                <Typography style={{ cursor: 'pointer' }} onclick={addProductToBasket(data)}>Add To Basket</Typography>
                 <Link to="/ProductDescription">Product Description</Link>
                 <Route
                   path="/Description"
                   render={props => <ProductDescription />}
-                />              </Grid>
+                />
+                </Grid>
             </Grid>
             <Grid item>
             <Typography variant="subtitle1"><strike>$35.00</strike></Typography>

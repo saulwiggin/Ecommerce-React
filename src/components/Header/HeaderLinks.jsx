@@ -19,6 +19,12 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 
 import headerLinksStyle from "assets/jss/material-dashboard-react/components/headerLinksStyle.jsx";
+import { getTotal, getCartProducts } from '../reducers'
+
+const mapStateToProps = (state) => ({
+  products: getCartProducts(state),
+  total: getTotal(state)
+})
 
 class HeaderLinks extends React.Component {
   state = {
@@ -36,9 +42,13 @@ class HeaderLinks extends React.Component {
     this.setState({ open: false });
   };
 
+
+
   render() {
     const { classes } = this.props;
     const { open } = this.state;
+    store.subscribe(() => console.log(store.getState()))
+
     return (
       <div>
         <div className={classes.searchWrapper}>
@@ -113,6 +123,7 @@ class HeaderLinks extends React.Component {
                 <Paper>
                   <ClickAwayListener onClickAway={this.handleClose}>
                     <MenuList role="menu">
+
                       <MenuItem
                         onClick={this.handleClose}
                         className={classes.dropdownItem}

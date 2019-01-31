@@ -77,6 +77,9 @@ class ProductDescription extends React.Component {
 
   render() {
     const { classes, picture } = this.props;
+    const { state } = props.location.state;
+    console.log(state);
+    console.log(picture);
 
     return (
       <GridContainer>
@@ -84,7 +87,7 @@ class ProductDescription extends React.Component {
           <Card plain>
             <Carousel>
               <div>
-                  <img src={picture.img} />
+                  <img src="assets/1.jpg" />
                   <p className="legend">Legend 1</p>
               </div>
               <div>

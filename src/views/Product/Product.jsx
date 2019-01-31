@@ -52,7 +52,11 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import tileData from './tileData';
+
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux'
+import { createLogger } from 'redux-logger'
+import thunk from 'redux-thunk'
 
 import { getList } from 'components/Api/Api.js';
 
@@ -80,6 +84,33 @@ const styles = theme => ({
   },
 });
 
+const tileData = [
+  {
+    img: 'assets/img/side-bar-1.jpeg',
+    title: 'Image',
+    author: 'author',
+    cols: 2,
+  },
+  {
+    img: 'assets/img/side-bar-2.jpeg',
+    title: 'Image',
+    author: 'author',
+    cols: 2,
+  },
+  {
+    img: 'assets/img/side-bar-3.jpeg',
+    title: 'Image',
+    author: 'author',
+    cols: 2,
+  },
+  {
+    img: 'assets/img/side-bar-4.jpeg',
+    title: 'Image',
+    author: 'author',
+    cols: 2,
+  },
+];
+
 class Product extends React.Component {
   constructor(){
     super();
@@ -88,6 +119,30 @@ class Product extends React.Component {
       anchorEl: null
     };
   }
+
+  function counter(state = 0, action) {
+    switch (action.type) {
+      case 'INCREMENT':
+        return state + 1
+      case 'DECREMENT':
+        return state - 1
+      default:
+        return state
+    }
+  }
+
+
+
+  const middleware = [ thunk ];
+  if(process.env.NODE_ENV !== 'production'){
+    middleware.push(createLogger());
+  }
+
+  let store = createStore(reducer, applyMiddleware(..middleware))
+
+  store.dispatch({ type: 'INCREMENT' })
+
+  store.subscribe(() => console.log(store.getState()))
 
   static async getInitialProps(){
     const list = await getList();
@@ -171,7 +226,7 @@ class Product extends React.Component {
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                  {this.state.pictures.map((pic) => (
+                  {pictures.map((pic) => (
                     <div>
                       <TableRow key={results} onClick={this.redirectProductDescription(pic)}
                         aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -234,7 +289,7 @@ class Product extends React.Component {
                     ))}
                   </GridList>
                 </div>
-                </GridItem
+                </GridItem>
               </GridContainer>
             </div>
         </div>

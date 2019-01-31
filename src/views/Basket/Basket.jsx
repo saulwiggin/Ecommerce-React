@@ -197,6 +197,7 @@ class Basket extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { expanded } = this.state;
     return (
       <div>
       <GridContainer>
@@ -266,7 +267,7 @@ class Basket extends React.Component {
                 <h2> Delivery Options </h2>
                 <ExpansionPanel expanded={expanded === 'panel1'} onChange={this.handleAccordianChange('panel1')}>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>General settings</Typography>
+                    <Typography className={classes.heading}>UK Delivery</Typography>
                     <Typography className={classes.secondaryHeading}>I am an expansion panel</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>

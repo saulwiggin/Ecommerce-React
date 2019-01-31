@@ -9,6 +9,7 @@ import Input from "@material-ui/core/Input";
 // @material-ui/icons
 import Clear from "@material-ui/icons/Clear";
 import Check from "@material-ui/icons/Check";
+import { createStore } from 'redux';
 // core components
 import customInputStyle from "assets/jss/material-dashboard-react/components/customInputStyle.jsx";
 
@@ -36,10 +37,10 @@ function CustomInput({ ...props }) {
   const marginTop = classNames({
     [classes.marginTop]: labelText === undefined
   });
-  filterproducts = (inputprops) => {
-    var products = this.getState(pictures);
+  function filterproducts = (inputprops) => {
+    var products = inputprops.pictures;
     const filteredProducts = products.filter(products.name.contains(inputprops));
-    this.setState('filteredProducts': filteredProducts);
+    this.setState({'filteredProducts': filteredProducts});
   }
   return (
     <FormControl
