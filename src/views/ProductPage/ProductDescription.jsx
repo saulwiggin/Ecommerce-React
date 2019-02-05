@@ -77,7 +77,7 @@ class ProductDescription extends React.Component {
 
   render() {
     const { classes, picture } = this.props;
-    const { state } = props.location.state;
+    const { state } = this.props.location.state;
     console.log(state);
     console.log(picture);
 

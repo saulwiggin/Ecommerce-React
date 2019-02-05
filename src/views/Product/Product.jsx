@@ -225,7 +225,7 @@ class Product extends React.Component {
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                  {pictures.map((pic) => (
+                {pictures.map((pic) => (
                     <div>
                       <TableRow key={results} onClick={this.redirectProductDescription(pic)}
                         aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -235,7 +235,7 @@ class Product extends React.Component {
                       {pic}
                       </TableRow>
                     </div>
-                  ))}
+                ))}
                   </TableBody>
                   <Popover
                    id="mouse-over-popover"

@@ -37,7 +37,7 @@ function CustomInput({ ...props }) {
   const marginTop = classNames({
     [classes.marginTop]: labelText === undefined
   });
-  function filterproducts = (inputprops) => {
+  function filterproducts(inputprops){
     var products = inputprops.pictures;
     const filteredProducts = products.filter(products.name.contains(inputprops));
     this.setState({'filteredProducts': filteredProducts});

@@ -47,7 +47,7 @@ class HeaderLinks extends React.Component {
   render() {
     const { classes } = this.props;
     const { open } = this.state;
-    store.subscribe(() => console.log(store.getState()))
+    const store = store.getState();
 
     return (
       <div>
