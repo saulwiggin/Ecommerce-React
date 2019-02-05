@@ -111,6 +111,30 @@ const tileData = [
   },
 ];
 
+
+  const middleware = [ thunk ];
+  if(process.env.NODE_ENV !== 'production'){
+    middleware.push(createLogger());
+  }
+
+  function counter(state = 0, action) {
+     switch (action.type) {
+       case 'INCREMENT':
+         return state + 1
+       case 'DECREMENT':
+         return state - 1
+       default:
+         return state
+     }
+   }
+
+   let store = createStore(counter)
+
+   store.dispatch({ type: 'INCREMENT' })
+
+   store.subscribe(() => console.log(store.getState()))
+
+
 class Product extends React.Component {
   constructor(){
     super();
@@ -119,30 +143,6 @@ class Product extends React.Component {
       anchorEl: null
     };
   }
-
-  function counter(state = 0, action) {
-    switch (action.type) {
-      case 'INCREMENT':
-        return state + 1
-      case 'DECREMENT':
-        return state - 1
-      default:
-        return state
-    }
-  }
-
-
-
-  const middleware = [ thunk ];
-  if(process.env.NODE_ENV !== 'production'){
-    middleware.push(createLogger());
-  }
-
-  let store = createStore(reducer, applyMiddleware(..middleware))
-
-  store.dispatch({ type: 'INCREMENT' })
-
-  store.subscribe(() => console.log(store.getState()))
 
   static async getInitialProps(){
     const list = await getList();

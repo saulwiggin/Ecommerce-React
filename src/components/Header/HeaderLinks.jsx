@@ -19,7 +19,7 @@ import CustomInput from "components/CustomInput/CustomInput.jsx";
 import Button from "components/CustomButtons/Button.jsx";
 
 import headerLinksStyle from "assets/jss/material-dashboard-react/components/headerLinksStyle.jsx";
-import { getTotal, getCartProducts } from '../reducers'
+import { getTotal, getCartProducts } from 'reducers/index.js'
 
 const mapStateToProps = (state) => ({
   products: getCartProducts(state),

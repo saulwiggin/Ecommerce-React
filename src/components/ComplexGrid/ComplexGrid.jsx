@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Icon from '@material-ui/core/Icon';
 
-import { addToCart } from '../actions'
+import { addToCart } from 'actions/index.js';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
