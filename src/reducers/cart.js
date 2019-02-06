@@ -6,7 +6,8 @@ import {
 
 const initialState = {
   addedIds: [],
-  quantityById: {}
+  quantityById: {},
+  type: ''
 }
 
 const addedIds = (state = initialState.addedIds, action) => {

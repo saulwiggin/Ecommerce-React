@@ -112,26 +112,10 @@ const tileData = [
 ];
 
   const middleware = [ thunk ];
+
   if(process.env.NODE_ENV !== 'production'){
     middleware.push(createLogger());
   }
-
-  function counter(state = 0, action) {
-     switch (action.type) {
-       case 'INCREMENT':
-         return state + 1
-       case 'DECREMENT':
-         return state - 1
-       default:
-         return state
-     }
-   }
-
-   let store = createStore(counter)
-
-   store.dispatch({ type: 'INCREMENT' })
-
-   store.subscribe(() => console.log(store.getState()))
 
 
 class Product extends React.Component {
@@ -165,15 +149,21 @@ class Product extends React.Component {
   };
 
   componentDidMount(){
-    fetch('https://pricesearcher-frontend-test.herokuapp.com/',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application-json',
-        'X-API-KEY': "46c0a1e171c76bb37784d60aad4df750"
-      }
+    // fetch('https://pricesearcher-frontend-test.herokuapp.com/',{
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application-json',
+    //     'X-API-KEY': "46c0a1e171c76bb37784d60aad4df750"
+    //   }
+    // })
+  //  .then(response => response.json()).then(data => this.setState({ data: data })).catch(error => this.setState({ error, isLoading: false }));
+    fetch('thisiseden.shopify.com/admin/products/')
+    .then( response => {
+      this.setState({response: response});
+      return response.json();
     })
-    //.then(response => response.json()).then(data => this.setState({ data: data })).catch(error => this.setState({ error, isLoading: false }));
-    //fetch('https://randomuser.me/api/?results=500')
+
+    fetch('https://randomuser.me/api/?results=500')
     .then (results => {
       console.log(results);
       this.setState({results: results});
@@ -225,7 +215,7 @@ class Product extends React.Component {
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                {pictures.map((pic) => (
+                    {this.state.pictures.map((pic) => (
                     <div>
                       <TableRow key={results} onClick={this.redirectProductDescription(pic)}
                         aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -235,7 +225,7 @@ class Product extends React.Component {
                       {pic}
                       </TableRow>
                     </div>
-                ))}
+                    }  ))}
                   </TableBody>
                   <Popover
                    id="mouse-over-popover"

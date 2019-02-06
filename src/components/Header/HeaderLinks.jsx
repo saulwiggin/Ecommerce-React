@@ -29,7 +29,6 @@ const mapStateToProps = (state) => ({
 
 
 class HeaderLinks extends React.Component {
-  state = this.getCurrentStateFromStore();
 
   state = {
     open: false
@@ -47,6 +46,12 @@ class HeaderLinks extends React.Component {
     this.setState({ open: false });
   };
 
+  filterproducts = (inputprops) => {
+    var products = inputprops.pictures;
+    const filteredProducts = products.filter(products.name.contains(inputprops));
+    this.setState({'filteredProducts': filteredProducts});
+  }
+
   render() {
     const { classes } = this.props;
     const { open, store } = this.state;
@@ -55,6 +60,7 @@ class HeaderLinks extends React.Component {
       <div>
         <div className={classes.searchWrapper}>
           <CustomInput
+            onChange={this.filterproducts}
             formControlProps={{
               className: classes.margin + " " + classes.search
             }}

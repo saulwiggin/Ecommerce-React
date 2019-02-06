@@ -37,11 +37,7 @@ function CustomInput({ ...props }) {
   const marginTop = classNames({
     [classes.marginTop]: labelText === undefined
   });
-  function filterproducts(inputprops){
-    var products = inputprops.pictures;
-    const filteredProducts = products.filter(products.name.contains(inputprops));
-    this.setState({'filteredProducts': filteredProducts});
-  }
+
   return (
     <FormControl
       {...formControlProps}
@@ -57,7 +53,6 @@ function CustomInput({ ...props }) {
         </InputLabel>
       ) : null}
       <Input
-        onChange={this.filterproducts}
         classes={{
           root: marginTop,
           disabled: classes.disabled,
