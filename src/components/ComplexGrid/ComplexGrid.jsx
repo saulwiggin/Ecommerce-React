@@ -8,10 +8,12 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Icon from '@material-ui/core/Icon';
 
 import { addToCart } from 'actions/index.js';
+import { connect } from 'react-redux';
 
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import ProductDescription from 'views/ProductPage/ProductDescription'
+import HeaderLinks from 'components/Header/HeaderLinks'
 
 const styles = theme => ({
   root: {
@@ -42,7 +44,6 @@ function ClickProductDescription(image){
 }
 
 function addProductToBasket(info){
-
 }
 
 function ComplexGrid(props) {

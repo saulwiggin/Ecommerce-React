@@ -23,13 +23,18 @@ import { getTotal, getCartProducts } from 'reducers/index.js'
 
 const mapStateToProps = (state) => ({
   products: getCartProducts(state),
-  total: getTotal(state)
+  total: getTotal(state),
+
 })
 
+
 class HeaderLinks extends React.Component {
+  state = this.getCurrentStateFromStore();
+
   state = {
     open: false
   };
+
   handleToggle = () => {
     this.setState(state => ({ open: !state.open }));
   };
@@ -42,12 +47,9 @@ class HeaderLinks extends React.Component {
     this.setState({ open: false });
   };
 
-
-
   render() {
     const { classes } = this.props;
-    const { open } = this.state;
-    const store = store.getState();
+    const { open, store } = this.state;
 
     return (
       <div>
