@@ -16,15 +16,13 @@ let store = createStore(addToCart, window.STATE_FROM_SERVER)
 console.log(store.getState())
 
 ReactDOM.render(
-  <Provider store={store}>
     <Router history={hist}>
       <Switch>
         {indexRoutes.map((prop, key) => {
-          return <Route path={prop.path} component={prop.component} key={key} />;
+          return <Provider store={store}> <Route path={prop.path} component={prop.component} key={key} /></Provider>;
         })}
       </Switch>
     </Router>
-  </Provider>
 , document.getElementById("root"));
 
 export default connect()(Switch)

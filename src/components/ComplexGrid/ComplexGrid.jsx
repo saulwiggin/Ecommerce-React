@@ -43,11 +43,13 @@ function ClickProductDescription(image){
   )
 }
 
-function addProductToBasket(info){
+function addProductToBasket(props, info){
+  props.store.dispatch({type : 'ADD_TO_CART', product: info});
+  console.log(props.store.getState())
 }
 
 function ComplexGrid(props) {
-  const { classes, pictures,data } = props;
+  const { classes, pictures, data, store } = props;
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>

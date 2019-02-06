@@ -47,28 +47,23 @@ import Typography from '@material-ui/core/Typography';
 
 import ComplexGrid from "components/ComplexGrid/ComplexGrid.jsx";
 import ProductDescription from "components/ComplexGrid/ComplexGrid.jsx";
-
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux'
 import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk'
-
 import { getList } from 'components/Api/Api.js';
-
 import { bugs, website, server } from "variables/general.jsx";
-
 import {
   dailySalesChart,
   emailsSubscriptionChart,
   completedTasksChart
 } from "variables/charts.jsx";
-
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import img from "assets/img/faces/marc.jpg";
+import axios from 'axios';
 
 const styles = theme => ({
   root: {
@@ -111,6 +106,8 @@ const tileData = [
   },
 ];
 
+
+
   const middleware = [ thunk ];
 
   if(process.env.NODE_ENV !== 'production'){
@@ -119,8 +116,9 @@ const tileData = [
 
 
 class Product extends React.Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
+    console.log(props);
     this.state = {
       products: [],
       anchorEl: null
@@ -148,7 +146,28 @@ class Product extends React.Component {
     this.setState({ anchorEl: null });
   };
 
-  componentDidMount(){
+  componentDidMount(props){
+    const json =
+      [
+        {
+          name: 'Cup',
+          price: '99p',
+          discountPrice: '39p',
+          productDescription: 'This cup filled the hallows eve with the fluid of the elixir of life coverted by the knights templar',
+          img:img
+        }
+      ];
+
+    let myMap = new Map().set(json);
+    axios.get('https://randomuser.me/api/?results=500')
+    .then(result => this.setState({
+      hits: result.data.hits,
+      isoading: false
+    }))
+    .catch(error => this.setState({
+      error,
+      isLoading:false
+    }));
     // fetch('https://pricesearcher-frontend-test.herokuapp.com/',{
     //   method: 'POST',
     //   headers: {
@@ -157,12 +176,12 @@ class Product extends React.Component {
     //   }
     // })
   //  .then(response => response.json()).then(data => this.setState({ data: data })).catch(error => this.setState({ error, isLoading: false }));
-    fetch('thisiseden.shopify.com/admin/products/')
-    .then( response => {
-      this.setState({response: response});
-      return response.json();
-    })
-
+    // fetch('http://thisiseden.shopify.com/admin/products/')
+    // .then( response => {
+    //   this.setState({response: response.json});
+    //   console.log(this.state);
+    // })
+    console.log('before fetch');
     fetch('https://randomuser.me/api/?results=500')
     .then (results => {
       console.log(results);
@@ -174,12 +193,16 @@ class Product extends React.Component {
         return(
           <div key={pic.results}>
           <GridItem xs={12} sm={12} md={10} lg={8}>
-            <ComplexGrid pictures={pic.picture.medium} data={pic}>
+            <ComplexGrid store={props.store} pictures={pic.picture.medium} data={pic}>
             </ComplexGrid>
           </GridItem>
         </div>
         )
       })
+      .error(response){
+        console.log(response);
+      }
+
       this.setState({pictures: pictures});
       this.setState({page: 0});
       this.setState({rowsPerPage: 5});
@@ -201,8 +224,8 @@ class Product extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { rows, rowsPerPage, page, pictures, results, anchorEl } = this.state;
+    const { classes, store, pictures } = this.props;
+    const { rows, rowsPerPage, page, results, anchorEl } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, 500 - page * rowsPerPage);
     const open = Boolean(anchorEl);
     return (
@@ -215,17 +238,18 @@ class Product extends React.Component {
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                    {this.state.pictures.map((pic) => (
+                  {pic}
+
+                    {/* }{pic.map((each) => (
                     <div>
-                      <TableRow key={results} onClick={this.redirectProductDescription(pic)}
+                      <TableRow key={results} onClick={this.redirectProductDescription(each)}
                         aria-owns={open ? 'mouse-over-popover' : undefined}
                         aria-haspopup="true"
                         onMouseEnter={this.handlePopoverOpen}
                         onMouseLeave={this.handlePopoverClose}>
-                      {pic}
                       </TableRow>
                     </div>
-                    }  ))}
+                    ))}*/}
                   </TableBody>
                   <Popover
                    id="mouse-over-popover"
