@@ -64,6 +64,7 @@ import {
 import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import img from "assets/img/faces/marc.jpg";
 import axios from 'axios';
+import amazon from 'amazon-product-api';
 
 const styles = theme => ({
   root: {
@@ -159,15 +160,37 @@ class Product extends React.Component {
       ];
 
     let myMap = new Map().set(json);
-    axios.get('https://randomuser.me/api/?results=500')
+
+    //amazon product appId
+    var client = amazon.createClient({
+      awsId: "AKIAI2XZJNANCTYHPYVA",
+      awsSecret: "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",
+      awsTag: "saulwiggin-21"
+    });
+
+    client.itemSearch({
+      searchIndex: 'bras',
+    }).then(function(results){
+      console.log(results);
+    }).catch(function(err){
+      console.log(err);
+    });
+
+
+    //get products from shopify
+    let API_KEY = 'fcd4480ad33ecb398fd3024d0b381de6';
+    let API_SECRET = 'e8ab6bf6d3d38fc3aa7c52532df0a57f';
+    axios.get('https://'+API_KEY+':'+API_SECRET+'@thisiseden.shopify.com/admin/products.json')
     .then(result => this.setState({
-      hits: result.data.hits,
+      products: result,
       isoading: false
     }))
     .catch(error => this.setState({
       error,
       isLoading:false
-    }));
+    }))
+
+
     // fetch('https://pricesearcher-frontend-test.herokuapp.com/',{
     //   method: 'POST',
     //   headers: {
@@ -181,7 +204,8 @@ class Product extends React.Component {
     //   this.setState({response: response.json});
     //   console.log(this.state);
     // })
-    console.log('before fetch');
+    console.log('does contain store?');
+    console.log(props);
     fetch('https://randomuser.me/api/?results=500')
     .then (results => {
       console.log(results);
@@ -193,15 +217,12 @@ class Product extends React.Component {
         return(
           <div key={pic.results}>
           <GridItem xs={12} sm={12} md={10} lg={8}>
-            <ComplexGrid store={props.store} pictures={pic.picture.medium} data={pic}>
+            <ComplexGrid store={props} picture={pic.picture.img} data={pic}>
             </ComplexGrid>
           </GridItem>
         </div>
         )
       })
-      .error(response){
-        console.log(response);
-      }
 
       this.setState({pictures: pictures});
       this.setState({page: 0});
@@ -238,8 +259,6 @@ class Product extends React.Component {
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                  {pic}
-
                     {/* }{pic.map((each) => (
                     <div>
                       <TableRow key={results} onClick={this.redirectProductDescription(each)}

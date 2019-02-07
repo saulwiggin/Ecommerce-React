@@ -49,14 +49,15 @@ function addProductToBasket(props, info){
 }
 
 function ComplexGrid(props) {
-  const { classes, pictures, data, store } = props;
+  const { classes, picture, data, store } = props;
+  console.log(props);
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Grid container spacing={16}>
           <Grid item>
             <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src={pictures}/>
+              <img className={classes.img} alt="complex" src={picture}/>
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container>

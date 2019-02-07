@@ -12,6 +12,7 @@
     "@types/googlemaps": "3.30.13",
     "@types/markerclustererplus": "2.1.33",
     "ajv": "^5.0.0",
+    "amazon-product-api": "^0.4.4",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.2.1",
