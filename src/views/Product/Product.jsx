@@ -161,7 +161,8 @@ class Product extends React.Component {
 
     let myMap = new Map().set(json);
 
-    //amazon product appId
+    // amazon product appId
+    // search for discounted items
     var client = amazon.createClient({
       awsId: "AKIAI2XZJNANCTYHPYVA",
       awsSecret: "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",
@@ -175,21 +176,6 @@ class Product extends React.Component {
     }).catch(function(err){
       console.log(err);
     });
-
-
-    //get products from shopify
-    let API_KEY = 'fcd4480ad33ecb398fd3024d0b381de6';
-    let API_SECRET = 'e8ab6bf6d3d38fc3aa7c52532df0a57f';
-    axios.get('https://'+API_KEY+':'+API_SECRET+'@thisiseden.shopify.com/admin/products.json')
-    .then(result => this.setState({
-      products: result,
-      isoading: false
-    }))
-    .catch(error => this.setState({
-      error,
-      isLoading:false
-    }))
-
 
     // fetch('https://pricesearcher-frontend-test.herokuapp.com/',{
     //   method: 'POST',
