@@ -161,6 +161,13 @@ class Product extends React.Component {
 
     let myMap = new Map().set(json);
 
+    //groupon fundamentals
+    fetch('https://api.discountapi.com/v2/deals?api_key=uinJPNQR')
+    .then ( results =>
+      console.log(results);
+    );
+
+
     // amazon product appId
     // search for discounted items
     var client = amazon.createClient({
