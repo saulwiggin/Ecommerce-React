@@ -1,5 +1,5 @@
 {
-  "Vehicle": [
+  "Vehicles": [
     {
       "id": 1,
       "registration": 2018,
@@ -9,7 +9,7 @@
       "color":"grey",
       "mileage":2796,
       "price":14865,
-      "imagepath":"img1.jpg"
+      "imagepath":"assets/img/img1.jpg"
     },
     {
       "id": 2,
@@ -20,7 +20,7 @@
       "color":"blue",
       "mileage":106040,
       "price":275,
-      "imagepath":"img2.jpg"
+      "imagepath":"assets/img/img2.jpg"
     },
     {
       "id": 3,
@@ -31,7 +31,7 @@
       "color":"silver",
       "mileage":47000,
       "price":295,
-      "imagepath":"img3.jpg"
+      "imagepath":"assets/img/img3.jpg"
     },
     {
       "id": 4,
@@ -42,7 +42,7 @@
       "color":"grey",
       "mileage":163292,
       "price":299,
-      "imagepath":"img4.jpg"
+      "imagepath":"assets/img/img4.jpg"
     }
   ]
 }

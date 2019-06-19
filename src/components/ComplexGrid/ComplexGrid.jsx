@@ -59,17 +59,17 @@ function ComplexGrid(props) {
         <Grid container spacing={16}>
           <Grid item>
             <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="car" src={picture}/>
+              <img className={classes.img} alt="car" src={data.img}/>
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={16}>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle1">
-                Make:
+                {data.make}
                 </Typography>
-                <Typography gutterBottom>model</Typography>
-                <Typography color="textSecondary">reg</Typography>
+                <Typography gutterBottom>{data.model}</Typography>
+                <Typography color="textSecondary">{data.reg}</Typography>
               </Grid>
               <Grid item>
                 <Typography style={{ cursor: 'pointer' }}>Add To Basket</Typography>
@@ -81,8 +81,8 @@ function ComplexGrid(props) {
                 </Grid>
             </Grid>
             <Grid item>
-            <Typography variant="subtitle1">mileage</Typography>
-              <Typography variant="subtitle1">$19.00</Typography>
+            <Typography variant="subtitle1">{data.mileage}</Typography>
+              <Typography variant="subtitle1">{data.price}</Typography>
             </Grid>
             <Grid item>
             <Icon>arrow-circle-down </Icon>

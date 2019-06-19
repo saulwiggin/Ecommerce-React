@@ -45,6 +45,10 @@ import LastPageIcon from '@material-ui/icons/LastPage';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Slider from '@material-ui/lab/Slider';
 
 import ComplexGrid from "components/ComplexGrid/ComplexGrid.jsx";
 import ProductDescription from "components/ComplexGrid/ComplexGrid.jsx";
@@ -81,51 +85,21 @@ const styles = theme => ({
   },
 });
 
-const tileData = [
-  {
-    img: 'assets/img/side-bar-1.jpeg',
-    title: 'Image',
-    author: 'author',
-    cols: 2,
-  },
-  {
-    img: 'assets/img/side-bar-2.jpeg',
-    title: 'Image',
-    author: 'author',
-    cols: 2,
-  },
-  {
-    img: 'assets/img/side-bar-3.jpeg',
-    title: 'Image',
-    author: 'author',
-    cols: 2,
-  },
-  {
-    img: 'assets/img/side-bar-4.jpeg',
-    title: 'Image',
-    author: 'author',
-    cols: 2,
-  },
-];
-
-
-
   const middleware = [ thunk ];
 
   if(process.env.NODE_ENV !== 'production'){
     middleware.push(createLogger());
   }
 
-
 class Product extends React.Component {
   constructor(props){
     super(props);
     console.log(props);
+    let valuetext = 0;
     this.state = {
       products: [],
       anchorEl: null,
-      vehicleslist:
-      [
+      vehicleslist: [
         {
           "id": 1,
           "registration": 2018,
@@ -135,7 +109,7 @@ class Product extends React.Component {
           "color":"grey",
           "mileage":2796,
           "price":14865,
-          "imagepath":"img1.jpg"
+          "imagepath":"assets/img/img1.jpg"
         },
         {
           "id": 2,
@@ -146,7 +120,7 @@ class Product extends React.Component {
           "color":"blue",
           "mileage":106040,
           "price":275,
-          "imagepath":"img2.jpg"
+          "imagepath":"assets/img/img2.jpg"
         },
         {
           "id": 3,
@@ -157,7 +131,7 @@ class Product extends React.Component {
           "color":"silver",
           "mileage":47000,
           "price":295,
-          "imagepath":"img3.jpg"
+          "imagepath":"assets/img/img3.jpg"
         },
         {
           "id": 4,
@@ -168,10 +142,10 @@ class Product extends React.Component {
           "color":"grey",
           "mileage":163292,
           "price":299,
-          "imagepath":"img4.jpg"
+          "imagepath":"assets/img/img4.jpg"
         }
       ]
-    };
+    }
   }
 
   static async getInitialProps(){
@@ -200,49 +174,25 @@ class Product extends React.Component {
     fetch('http://localhost:2003/Vehicle')
     .then(results => results.json())
     .then((data) => {
-      this.state.vehicles = data
-      this.setState({vehicles: data})
-      console.log(this.state)
+      this.state.vehicleslist = data
+      this.setState({vehicleslst: data})
       return data
     })
   }
-  //loop through complex grid and place in data
 
-  //apply filters
   createVehicles = () => {
     const items = [];
-    let vehicles = this.state.vehicles;
-    let vehicles2 = this.fetchData();
-    console.log(vehicles);
-    console.log(vehicles2);
+    let vehicles = this.fetchData();
     let vehicleslist = vehicles.map((item, key) => {
       items.push(
         <GridItem xs={12} sm={12} md={10} lg={8}>
-          <ComplexGrid>
+          <ComplexGrid props={item}>
           </ComplexGrid>
         </GridItem>
       )
     })
-    console.log(vehicleslist);
     return vehicleslist;
   }
-
-  createTable = () => {
-    let table = []
-
-    // Outer loop to create parent
-    for (let i = 0; i < 3; i++) {
-      let children = []
-      //Inner loop to create children
-      for (let j = 0; j < 5; j++) {
-        children.push(<td>{`Column ${j + 1}`}</td>)
-      }
-      //Create the parent and add the children
-      table.push(<tr>{children}</tr>)
-    }
-    return table
-  }
-
 
    redirectProductDescription = (pic) => {
      return(
@@ -270,76 +220,56 @@ class Product extends React.Component {
 
   filterVehicleByReg = (reg) => {
     let vehicleslist = this.state.vehicleslist;
-    vehicleslist.filter(vehicleslist.registration = registration)
+    vehicleslist.filter(vehicleslist.registration = reg)
+    this.setState({'vehicle':vehicleslist});
+  }
+
+  filterVehicleByColour = (color) => {
+    let vehicleslist = this.state.vehicleslist;
+    vehicleslist.filter(vehicleslist.color = color)
+    this.setState({'vehicle':vehicleslist});
+  }
+
+  filterVehicleByPrice = (val) => {
+    let min = val.min;
+    let max = val.max;
+    let vehicleslist = this.state.vehicleslist;
+    vehicleslist.filter(vehicleslist.price < max & vehicleslist.price > min)
     this.setState({'vehicle':vehicleslist});
   }
 
   componentDidMount(props){
-    const json =
-      [
-        {
-          name: 'Cup',
-          price: '99p',
-          discountPrice: '39p',
-          productDescription: 'This cup filled the hallows eve with the fluid of the elixir of life coverted by the knights templar',
-          img:img
-        }
-      ];
 
-    let myMap = new Map().set(json);
+    const tileData = [
+      {
+        img: 'assets/img/side-bar-1.jpeg',
+        title: 'Image',
+        author: 'author',
+        cols: 2,
+      },
+      {
+        img: 'assets/img/side-bar-2.jpeg',
+        title: 'Image',
+        author: 'author',
+        cols: 2,
+      },
+      {
+        img: 'assets/img/side-bar-3.jpeg',
+        title: 'Image',
+        author: 'author',
+        cols: 2,
+      },
+      {
+        img: 'assets/img/side-bar-4.jpeg',
+        title: 'Image',
+        author: 'author',
+        cols: 2,
+      },
+    ];
 
-    //groupon fundamentals
-    fetch('https://api.discountapi.com/v2/deals?api_key=uinJPNQR')
-    .then ( results =>
-      console.log(results)
-    );
+    this.fetchdata();
 
-
-    // amazon product appId
-    // search for discounted items
-    var client = amazon.createClient({
-      awsId: "AKIAI2XZJNANCTYHPYVA",
-      awsSecret: "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",
-      awsTag: "saulwiggin-21"
-    });
-
-    client.itemSearch({
-      searchIndex: 'bras',
-    }).then(function(results){
-      console.log(results);
-    }).catch(function(err){
-      console.log(err);
-    });
-
-
-
-    // fetch('https://randomuser.me/api/?results=500')
-    // .then (results => {
-    //   console.log(results.json());
-    //   this.setState({results: results});
-    //   return results.json();
-    // }).then(data => {
-    //   console.log(data.results);
-    //   let pictures = data.results.map((pic) => {
-    //     return(
-    //       <div key={pic.results}>
-    //       <GridItem xs={12} sm={12} md={10} lg={8}>
-    //         <ComplexGrid props={pic}>
-    //         </ComplexGrid>
-    //       </GridItem>
-    //     </div>
-    //     )
-    //   })
-
-    //   this.setState({pictures: pictures});
-    //   this.setState({page: 0});
-    //   this.setState({rowsPerPage: 5});
-    //
-    //   console.log("state", this.state.pictures);
-    // })
   }
-
-
 
   render() {
     const { classes, store, pictures, pic, vehicles, tileData } = this.props;
@@ -351,26 +281,47 @@ class Product extends React.Component {
         <div className = "container2">
           <div className = "container1">
           <GridContainer justify="center">
-          <Select onChange={filterVehicleByMake(val)}>input list of makes</Select>
-          <Select onChange={filterVehicleByModel(val)}>input list of models</Select>
-          <Select onChange={filterVehicleByModel(val)}>input list of reg</Select>
-          <Slider onChange={filterVehicleByPrice(val)}></Slider>
+          <Select onChange={(event) => this.filterVehicleByMake(event.target.value, event)}>
+            <MenuItem value="">
+              <em>Please Select:</em>
+            </MenuItem>
+            <MenuItem value='ford'>Ford</MenuItem>
+            <MenuItem value='seat'>Seat</MenuItem>
+            <MenuItem value='seat'>Saab</MenuItem>
+          </Select>
+          <Select onChange={(event) => this.filterVehicleByModel(event.target.value, event)}>
+            <MenuItem value="">
+              <em>Please Select:</em>
+            </MenuItem>
+            <MenuItem value='ford'>Aero</MenuItem>
+            <MenuItem value='seat'>Fiesta</MenuItem>
+            <MenuItem value='seat'>Ghia</MenuItem>
+          </Select>
+          <Select onChange={(event) => this.filterVehicleByModel(event.target.value, event)}>
+            <MenuItem value="">
+              <em>Please Select:</em>
+            </MenuItem>
+            <MenuItem value='ford'>Ford</MenuItem>
+            <MenuItem value='seat'>Seat</MenuItem>
+            <MenuItem value='seat'>Saab</MenuItem>
+          </Select>
+          <Slider
+            value='10'
+            onChange={(event) => this.filterVehicleByPrice(event.target.value, event)}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            getAriaValueText='price'
+          />
           <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="age-simple">Colour</InputLabel>
+            <InputLabel htmlFor="color">Colour</InputLabel>
               <Select
-                value={values.age}
-                onChange={filterVehicleByColour()}
+                value='color'
+                onChange={(event) => this.filterVehicleByColour(event.target.value, event)}
                 inputProps={{
-                  name: 'age',
-                  id: 'age-simple',
+                  name: 'color',
+                  id: 'color-simple',
                 }}
               >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
               </Select>
             </FormControl>
             <GridItem xs={12} sm={12} md={10} lg={8}>
@@ -432,13 +383,13 @@ class Product extends React.Component {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={10} lg={8}>
                 <div className={classes.root}>
-                {/*}  <GridList cellHeight={160} className={classes.gridList} cols={3}>
+                  <GridList cellHeight={160} className={classes.gridList} cols={3}>
                     {tileData.map(tile => (
                       <GridListTile key={tile.img} cols={tile.cols || 1}>
                         <img src={tile.img} alt={tile.title} />
                       </GridListTile>
                     ))}
-                  </GridList> */}
+                  </GridList>
                 </div>
                 </GridItem>
               </GridContainer>
