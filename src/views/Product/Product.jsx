@@ -77,6 +77,7 @@ import dashboardStyle from "assets/jss/material-dashboard-react/views/dashboardS
 import img from "assets/img/faces/marc.jpg";
 import axios from 'axios';
 import amazon from 'amazon-product-api';
+import ColorPicker from 'material-ui-color-picker'
 
 const styles = theme => ({
   root: {
@@ -103,12 +104,13 @@ class Product extends React.Component {
   constructor(props){
     super(props);
     let valuetext = 0;
+    // const [value, setValue] = React.useState<number | number[]>([20, 37]);
     this.state = {
       products: [],
       rowsPerPage:5,
       page:1,
       anchorEl: null,
-      vehicleslist: [
+      demolist: [
         {
           "id": 1,
           "registration": 2018,
@@ -162,9 +164,9 @@ class Product extends React.Component {
     console.log(list);
   }
 
-  handleChange = (event, value) => {
-    this.setState({ value });
-  };
+  // handleChange = (event: any, newValue: number | number[]) => {
+  //     setValue(newValue);
+  //   };
 
   handleChangeIndex = index => {
     this.setState({ value: index });
@@ -184,20 +186,24 @@ class Product extends React.Component {
     .then(results => results.json())
     .then((data) => {
       console.log('return data from api', data);
-      this.state.vehicleslist = data
-      this.setState({vehicleslst: data})
+      const demolist = this.state.demolist
+      this.setState({"vehicleslist": data})
+      this.setState({"apilist": data})
+      this.setState({"vehicleslist": demolist})
+      console.log('set state for vehicleslist', this.state.vehicleslist);
       return data
     })
   }
 
-  createVehicles = () => {
+  resetVehicles = () => {
     const items = [];
     let vehicles = this.fetchData();
+    console.log('reset the vehicleslist then ...', this.state.vehicleslist);
     let vehicleslist = this.state.vehicleslist.map((item, key) => {
       console.log('map each vehicle to component', item, key)
       items.push(
         <GridItem key={key} xs={12} sm={12} md={10} lg={8}>
-        <div style={{ padding: 20 }}>
+        <div style={{ padding: 20, marginBottom: 40 }}>
               <Paper>
                 <Grid container>
                   <Grid item>
@@ -233,9 +239,62 @@ class Product extends React.Component {
         </GridItem>
       )
     })
-    console.log('return the full vehiclelist compoent with data', items);
+    console.log('return the full vehiclelist component with data', items);
+    this.items = items;
     return items;
   }
+
+  createVehicles = () => {
+    const items = [];
+    console.log('check the state', this.state);
+    const vehicles = this.state.vehicleslist;
+    console.log('check the vehicleslist', vehicles);
+    let vehicleslist = this.state.demolist.map((item, key) => {
+      console.log('map each vehicle to component', item, key)
+      items.push(
+        <GridItem key={key} xs={12} sm={12} md={10} lg={8}>
+        <div style={{ padding: 20, marginBottom: 20 }}>
+              <Paper>
+                <Grid container>
+                  <Grid item>
+                    <ButtonBase >
+                      <img alt="complex" src={item.imagepath} />
+                    </ButtonBase>
+                  </Grid>
+                  <Grid item xs={12} sm container>
+                    <Grid item xs container direction="column" spacing={2}>
+                      <Grid item xs>
+                        <Typography gutterBottom variant="subtitle1">
+                          {item.manufacturer} - {item.model} - {item.variant}
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          mileage: {item.mileage} - Registration {item.registration}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="body2" style={{ cursor: 'pointer' }}>
+                          color: {item.color}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="subtitle1">£{item.price}</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </div>
+        </GridItem>
+      )
+    })
+    console.log('return the full vehiclelist component with data', items);
+    this.items = items;
+    return items;
+  }
+
+
 
    redirectProductDescription = (pic) => {
      return(
@@ -251,90 +310,62 @@ class Product extends React.Component {
 
   filterVehicleByMake = (make) => {
     console.log('filter by make', make);
-    let vehicleslist = this.state.vehicleslist;
+    let vehicleslist = this.state.demolist;
     const filteredlist = vehicleslist.filter(function(vehicle){ console.log(vehicle); if (vehicle.manufacturer.toLowerCase() == make.toLowerCase()){ return true; } else { return false; }});
     console.log('filter vehicle list to show only make', filteredlist)
     this.setState({"vehicleslist":filteredlist});
-    this.createVehicles();
+    this.state.vehicleslist = filteredlist;
+    console.log('update the state',this.state);
+    this.resetVehicles();
   }
 
-  filterVehicleByModel = (model) => {
-    //reset list
-    vehicleslist = this.fetchData();
-    console.log('reset to complete vehicleslist', vehicleslist);
-    let vehicleslist = this.state.vehicleslist;
-    vehicleslist.filter(vehicleslist.model = model)
-    this.setState({'vehicleslist':vehicleslist});
-  }
+  //dynamically load models according to this make
 
   filterVehicleByReg = (reg) => {
-    let vehicleslist = this.state.vehicleslist;
-    vehicleslist.filter(vehicleslist.registration = reg)
-    this.setState({'vehicleslist':vehicleslist});
+    console.log('filter by reg', reg)
+    let vehicleslist = this.state.demolist;
+    console.log('reset the reg', vehicleslist);
+    const filteredlist = vehicleslist.filter(function(vehicle){ console.log(vehicle); if (vehicle.registration == parseInt(reg)){ return true; } else { return false; }})
+    this.setState({'vehicleslist':filteredlist});
+    this.state.vehicleslist = filteredlist;
+    this.resetVehicles();
   }
 
-  filterVehicleByColour = (color) => {
-    let vehicleslist = this.state.vehicleslist;
-    vehicleslist.filter(vehicleslist.color = color)
-    this.setState({'vehicleslist':vehicleslist});
-  }
+  //impleent a slider for mileage
 
-  filterVehicleByPrice = (val) => {
-    let min = val.min;
-    let max = val.max;
-    let vehicleslist = this.state.vehicleslist;
-    vehicleslist.filter(vehicleslist.price < max & vehicleslist.price > min)
-    this.setState({'vehicleslist':vehicleslist});
+  filterVehicleByPrice = (val, newValue) => {
+    console.log(' what are the min and max values of the slider', val, newValue)
+    let min = newValue[0];
+    let max = newValue[1];
+    let vehicleslist = this.state.demolist;
+    const filteredlist = vehicleslist.filter(function(vehicle){ if (vehicleslist.price < max & vehicleslist.price > min) { return true; } else {return false; }})
+    this.setState({'vehicleslist':filteredlist});
+    this.state.vehicleslist = filteredlist;
+    this.resetVehicles();
   }
 
   componentDidMount(props){
-
-    const tileData = [
-      {
-        img: 'assets/img/side-bar-1.jpeg',
-        title: 'Image',
-        author: 'author',
-        cols: 2,
-      },
-      {
-        img: 'assets/img/side-bar-2.jpeg',
-        title: 'Image',
-        author: 'author',
-        cols: 2,
-      },
-      {
-        img: 'assets/img/side-bar-3.jpeg',
-        title: 'Image',
-        author: 'author',
-        cols: 2,
-      },
-      {
-        img: 'assets/img/side-bar-4.jpeg',
-        title: 'Image',
-        author: 'author',
-        cols: 2,
-      },
-    ];
-
     this.fetchData();
     console.log('check state contains vehicle list', this.state);
     this.items = this.createVehicles();
     console.log('display the list of vehicles component', this.items);
+
   }
 
   render() {
     const { classes, store, pictures, pic, vehicles, tileData } = this.props;
     const { rows, rowsPerPage, page, results, anchorEl } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, 500 - page * rowsPerPage);
+    // const [value, setValue] = React.useState<number | number[]>([20, 37]);
     const open = Boolean(anchorEl);
     return (
       <div className = "wrapper">
         <div className = "container2">
-        <GridItem xs={12} sm={12} md={10} lg={8}>
-          <div className = "container1" style={{ padding: 20 }}>
+          <div className = "container1" style={{ padding: 40 }}>
             <Paper>
-              <GridContainer justify="left">
+              <GridContainer justify="left" style={{ padding: 40, marginBottom:80 }}>
                 <GridItem>
+                <InputLabel htmlFor="age-simple">Make</InputLabel>
                   <Select onChange={(event) => this.filterVehicleByMake(event.target.value, event)}>
                   <MenuItem value="">
                     <em>Please Select:</em>
@@ -345,19 +376,40 @@ class Product extends React.Component {
                 </Select>
               </GridItem>
               <GridItem>
-              <Select onChange={(event) => this.filterVehicleByModel(event.target.value, event)}>
+              <InputLabel htmlFor="age-simple">Reg</InputLabel>
+              <Select onChange={(event) => this.filterVehicleByReg(event.target.value, event)}>
                 <MenuItem value="">
                   <em>Please Select:</em>
                 </MenuItem>
-                <MenuItem value='ford'>Aero</MenuItem>
-                <MenuItem value='seat'>Fiesta</MenuItem>
-                <MenuItem value='seat'>Ghia</MenuItem>
+                <MenuItem value='1999'>1999</MenuItem>
+                <MenuItem value='2000'>2000</MenuItem>
+                <MenuItem value='2001'>2001</MenuItem>
+                <MenuItem value='2002'>2002</MenuItem>
+                <MenuItem value='2003'>2003</MenuItem>
+                <MenuItem value='2004'>2004</MenuItem>
+                <MenuItem value='2005'>2005</MenuItem>
+                <MenuItem value='2006'>2006</MenuItem>
+                <MenuItem value='2007'>2007</MenuItem>
+                <MenuItem value='2008'>2008</MenuItem>
+                <MenuItem value='2009'>2009</MenuItem>
+                <MenuItem value='2010'>2010</MenuItem>
+                <MenuItem value='2011'>2011</MenuItem>
+                <MenuItem value='2012'>2012</MenuItem>
+                <MenuItem value='2013'>2013</MenuItem>
+                <MenuItem value='2014'>2014</MenuItem>
+                <MenuItem value='2015'>2015</MenuItem>
+                <MenuItem value='2016'>2016</MenuItem>
+                <MenuItem value='2017'>2017</MenuItem>
+                <MenuItem value='2018'>2018</MenuItem>
+                <MenuItem value='2019'>2019</MenuItem>
               </Select>
               </GridItem>
               <GridItem>
+              <InputLabel htmlFor="price">Price</InputLabel>
+
                 <Slider
-                  value='10'
-                  onChange={(event) => this.filterVehicleByPrice(event.target.value, event)}
+                  value={[10, 100000]}
+                  onChange={(event, value) => this.filterVehicleByPrice(event, value)}
                   valueLabelDisplay="auto"
                   aria-labelledby="range-slider"
                 />
@@ -365,15 +417,13 @@ class Product extends React.Component {
               <GridItem>
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="color">Colour</InputLabel>
-                    <Select
-                      value='color'
-                      onChange={(event) => this.filterVehicleByColour(event.target.value, event)}
-                      inputProps={{
-                        name: 'color',
-                        id: 'color-simple',
-                      }}
-                    >
-                    </Select>
+                  <ColorPicker
+                    name='color'
+                    defaultValue='#000'
+                    // value={this.state.color} - for controlled component
+                    onChange={color => console.log(color)}
+
+                    />
                   </FormControl>
               </GridItem>
             </GridContainer>
@@ -428,17 +478,10 @@ class Product extends React.Component {
             </GridItem>
             <GridItem xs={12} sm={12} md={10} lg={8}>
             <div className={classes.root}>
-              <GridList cellHeight={160} className={classes.gridList} cols={3}>
-                {this.state.vehicleslist.map(tile => (
-                  <GridListTile key={tile.img} cols={tile.cols || 1}>
-                    <img src={tile.img} alt={tile.title} />
-                  </GridListTile>
-                ))}
-              </GridList>
+
             </div>
           </GridItem>
           </div>
-          </GridItem>
         </div>
       </div>
     );
