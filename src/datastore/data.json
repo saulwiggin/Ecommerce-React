@@ -1,0 +1,48 @@
+{
+  "Vehicle": [
+    {
+      "id": 1,
+      "registration": 2018,
+      "manufacturer": "Seat",
+      "model": "Leon",
+      "variant":"1.2",
+      "color":"grey",
+      "mileage":2796,
+      "price":14865,
+      "imagepath":"img1.jpg"
+    },
+    {
+      "id": 2,
+      "registration": 2000,
+      "manufacturer": "Saab",
+      "model": "Aero",
+      "variant":"2.3",
+      "color":"blue",
+      "mileage":106040,
+      "price":275,
+      "imagepath":"img2.jpg"
+    },
+    {
+      "id": 3,
+      "registration": 1999,
+      "manufacturer": "Ford",
+      "model": "Fiesta",
+      "variant":"1.25",
+      "color":"silver",
+      "mileage":47000,
+      "price":295,
+      "imagepath":"img3.jpg"
+    },
+    {
+      "id": 4,
+      "registration": 2004,
+      "manufacturer": "Ford",
+      "model": "Ghia",
+      "variant":"1.8",
+      "color":"grey",
+      "mileage":163292,
+      "price":299,
+      "imagepath":"img4.jpg"
+    }
+  ]
+}

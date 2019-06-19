@@ -44,6 +44,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
+import Select from '@material-ui/core/Select';
 
 import ComplexGrid from "components/ComplexGrid/ComplexGrid.jsx";
 import ProductDescription from "components/ComplexGrid/ComplexGrid.jsx";
@@ -122,7 +123,54 @@ class Product extends React.Component {
     console.log(props);
     this.state = {
       products: [],
-      anchorEl: null
+      anchorEl: null,
+      vehicleslist:
+      [
+        {
+          "id": 1,
+          "registration": 2018,
+          "manufacturer": "Seat",
+          "model": "Leon",
+          "variant":"1.2",
+          "color":"grey",
+          "mileage":2796,
+          "price":14865,
+          "imagepath":"img1.jpg"
+        },
+        {
+          "id": 2,
+          "registration": 2000,
+          "manufacturer": "Saab",
+          "model": "Aero",
+          "variant":"2.3",
+          "color":"blue",
+          "mileage":106040,
+          "price":275,
+          "imagepath":"img2.jpg"
+        },
+        {
+          "id": 3,
+          "registration": 1999,
+          "manufacturer": "Ford",
+          "model": "Fiesta",
+          "variant":"1.25",
+          "color":"silver",
+          "mileage":47000,
+          "price":295,
+          "imagepath":"img3.jpg"
+        },
+        {
+          "id": 4,
+          "registration": 2004,
+          "manufacturer": "Ford",
+          "model": "Ghia",
+          "variant":"1.8",
+          "color":"grey",
+          "mileage":163292,
+          "price":299,
+          "imagepath":"img4.jpg"
+        }
+      ]
     };
   }
 
@@ -147,6 +195,85 @@ class Product extends React.Component {
     this.setState({ anchorEl: null });
   };
 
+  //fetch the data from the json server
+   fetchData = () => {
+    fetch('http://localhost:2003/Vehicle')
+    .then(results => results.json())
+    .then((data) => {
+      this.state.vehicles = data
+      this.setState({vehicles: data})
+      console.log(this.state)
+      return data
+    })
+  }
+  //loop through complex grid and place in data
+
+  //apply filters
+  createVehicles = () => {
+    const items = [];
+    let vehicles = this.state.vehicles;
+    let vehicles2 = this.fetchData();
+    console.log(vehicles);
+    console.log(vehicles2);
+    let vehicleslist = vehicles.map((item, key) => {
+      items.push(
+        <GridItem xs={12} sm={12} md={10} lg={8}>
+          <ComplexGrid>
+          </ComplexGrid>
+        </GridItem>
+      )
+    })
+    console.log(vehicleslist);
+    return vehicleslist;
+  }
+
+  createTable = () => {
+    let table = []
+
+    // Outer loop to create parent
+    for (let i = 0; i < 3; i++) {
+      let children = []
+      //Inner loop to create children
+      for (let j = 0; j < 5; j++) {
+        children.push(<td>{`Column ${j + 1}`}</td>)
+      }
+      //Create the parent and add the children
+      table.push(<tr>{children}</tr>)
+    }
+    return table
+  }
+
+
+   redirectProductDescription = (pic) => {
+     return(
+       <div>
+        <Link to="/ProductDescription">Product Description</Link>
+        <Route
+          path="/ProductDescription"
+          render={pic => <ProductDescription />}
+        />
+      </div>
+     )
+  }
+
+  filterVehicleByMake = (make) => {
+    let vehicleslist = this.state.vehicleslist;
+    vehicleslist.filter(vehicleslist.manufacturer = make)
+    this.setState({"vehicle":vehicleslist});
+  }
+
+  filterVehicleByModel = (model) => {
+    let vehicleslist = this.state.vehicleslist;
+    vehicleslist.filter(vehicleslist.model = model)
+    this.setState({'vehicle':vehicleslist});
+  }
+
+  filterVehicleByReg = (reg) => {
+    let vehicleslist = this.state.vehicleslist;
+    vehicleslist.filter(vehicleslist.registration = registration)
+    this.setState({'vehicle':vehicleslist});
+  }
+
   componentDidMount(props){
     const json =
       [
@@ -164,7 +291,7 @@ class Product extends React.Component {
     //groupon fundamentals
     fetch('https://api.discountapi.com/v2/deals?api_key=uinJPNQR')
     .then ( results =>
-      console.log(results);
+      console.log(results)
     );
 
 
@@ -184,61 +311,38 @@ class Product extends React.Component {
       console.log(err);
     });
 
-    // fetch('https://pricesearcher-frontend-test.herokuapp.com/',{
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application-json',
-    //     'X-API-KEY': "46c0a1e171c76bb37784d60aad4df750"
-    //   }
-    // })
-  //  .then(response => response.json()).then(data => this.setState({ data: data })).catch(error => this.setState({ error, isLoading: false }));
-    // fetch('http://thisiseden.shopify.com/admin/products/')
-    // .then( response => {
-    //   this.setState({response: response.json});
-    //   console.log(this.state);
-    // })
-    console.log('does contain store?');
-    console.log(props);
-    fetch('https://randomuser.me/api/?results=500')
-    .then (results => {
-      console.log(results);
-      this.setState({results: results});
-      return results.json();
-    }).then(data => {
-      console.log(data.results);
-      let pictures = data.results.map((pic) => {
-        return(
-          <div key={pic.results}>
-          <GridItem xs={12} sm={12} md={10} lg={8}>
-            <ComplexGrid store={props} picture={pic.picture.img} data={pic}>
-            </ComplexGrid>
-          </GridItem>
-        </div>
-        )
-      })
 
-      this.setState({pictures: pictures});
-      this.setState({page: 0});
-      this.setState({rowsPerPage: 5});
 
-      console.log("state", this.state.pictures);
-    })
+    // fetch('https://randomuser.me/api/?results=500')
+    // .then (results => {
+    //   console.log(results.json());
+    //   this.setState({results: results});
+    //   return results.json();
+    // }).then(data => {
+    //   console.log(data.results);
+    //   let pictures = data.results.map((pic) => {
+    //     return(
+    //       <div key={pic.results}>
+    //       <GridItem xs={12} sm={12} md={10} lg={8}>
+    //         <ComplexGrid props={pic}>
+    //         </ComplexGrid>
+    //       </GridItem>
+    //     </div>
+    //     )
+    //   })
+
+    //   this.setState({pictures: pictures});
+    //   this.setState({page: 0});
+    //   this.setState({rowsPerPage: 5});
+    //
+    //   console.log("state", this.state.pictures);
+    // })
   }
 
-   redirectProductDescription = (pic) => {
-     return(
-       <div>
-        <Link to="/ProductDescription">Product Description</Link>
-        <Route
-          path="/ProductDescription"
-          render={pic => <ProductDescription />}
-        />
-      </div>
-     )
-  }
+
 
   render() {
-    const { classes, store, pictures } = this.props;
+    const { classes, store, pictures, pic, vehicles, tileData } = this.props;
     const { rows, rowsPerPage, page, results, anchorEl } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, 500 - page * rowsPerPage);
     const open = Boolean(anchorEl);
@@ -247,21 +351,43 @@ class Product extends React.Component {
         <div className = "container2">
           <div className = "container1">
           <GridContainer justify="center">
+          <Select onChange={filterVehicleByMake(val)}>input list of makes</Select>
+          <Select onChange={filterVehicleByModel(val)}>input list of models</Select>
+          <Select onChange={filterVehicleByModel(val)}>input list of reg</Select>
+          <Slider onChange={filterVehicleByPrice(val)}></Slider>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="age-simple">Colour</InputLabel>
+              <Select
+                value={values.age}
+                onChange={filterVehicleByColour()}
+                inputProps={{
+                  name: 'age',
+                  id: 'age-simple',
+                }}
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+            </FormControl>
             <GridItem xs={12} sm={12} md={10} lg={8}>
               <Paper className={classes.root}>
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                    {/* }{pic.map((each) => (
-                    <div>
-                      <TableRow key={results} onClick={this.redirectProductDescription(each)}
-                        aria-owns={open ? 'mouse-over-popover' : undefined}
-                        aria-haspopup="true"
-                        onMouseEnter={this.handlePopoverOpen}
-                        onMouseLeave={this.handlePopoverClose}>
-                      </TableRow>
-                    </div>
-                    ))}*/}
+                    <GridItem xs={12} sm={12} md={10} lg={8}>
+                      <ComplexGrid>
+                      </ComplexGrid>
+                    </GridItem>
+                      {this.state.vehicles.map((vehicle) => (
+                      <GridItem xs={12} sm={12} md={10} lg={8}>
+                        <ComplexGrid>
+                        </ComplexGrid>
+                      </GridItem>
+                    ))}
                   </TableBody>
                   <Popover
                    id="mouse-over-popover"
@@ -306,13 +432,13 @@ class Product extends React.Component {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={10} lg={8}>
                 <div className={classes.root}>
-                  <GridList cellHeight={160} className={classes.gridList} cols={3}>
+                {/*}  <GridList cellHeight={160} className={classes.gridList} cols={3}>
                     {tileData.map(tile => (
                       <GridListTile key={tile.img} cols={tile.cols || 1}>
                         <img src={tile.img} alt={tile.title} />
                       </GridListTile>
                     ))}
-                  </GridList>
+                  </GridList> */}
                 </div>
                 </GridItem>
               </GridContainer>

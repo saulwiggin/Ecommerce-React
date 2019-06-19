@@ -43,10 +43,12 @@ function ClickProductDescription(image){
   )
 }
 
-function addProductToBasket(props, info){
-  props.store.dispatch({type : 'ADD_TO_CART', product: info});
-  console.log(props.store.getState())
-}
+// function addProductToBasket(props, info){
+//   props.store.dispatch({type : 'ADD_TO_CART', product: info});
+//   console.log(props.store.getState())
+// }
+
+// add filter
 
 function ComplexGrid(props) {
   const { classes, picture, data, store } = props;
@@ -57,20 +59,20 @@ function ComplexGrid(props) {
         <Grid container spacing={16}>
           <Grid item>
             <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src={picture}/>
+              <img className={classes.img} alt="car" src={picture}/>
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={16}>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle1">
-                  {data.name.phone}
+                Make:
                 </Typography>
-                <Typography gutterBottom>{data.name.title} {data.name.first} {data.name.last}</Typography>
-                <Typography color="textSecondary">{data.id.value}</Typography>
+                <Typography gutterBottom>model</Typography>
+                <Typography color="textSecondary">reg</Typography>
               </Grid>
               <Grid item>
-                <Typography style={{ cursor: 'pointer' }} onclick={addProductToBasket(data)}>Add To Basket</Typography>
+                <Typography style={{ cursor: 'pointer' }}>Add To Basket</Typography>
                 <Link to="/ProductDescription">Product Description</Link>
                 <Route
                   path="/Description"
@@ -79,7 +81,7 @@ function ComplexGrid(props) {
                 </Grid>
             </Grid>
             <Grid item>
-            <Typography variant="subtitle1"><strike>$35.00</strike></Typography>
+            <Typography variant="subtitle1">mileage</Typography>
               <Typography variant="subtitle1">$19.00</Typography>
             </Grid>
             <Grid item>
