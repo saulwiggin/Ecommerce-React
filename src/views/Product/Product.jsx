@@ -78,6 +78,7 @@ import img from "assets/img/faces/marc.jpg";
 import axios from 'axios';
 import amazon from 'amazon-product-api';
 import ColorPicker from 'material-ui-color-picker'
+import { TwitterPicker } from 'react-color'
 
 const styles = theme => ({
   root: {
@@ -117,7 +118,7 @@ class Product extends React.Component {
           "manufacturer": "Seat",
           "model": "Leon",
           "variant":"1.2",
-          "color":"grey",
+          "color":"#abb8c3",
           "mileage":2796,
           "price":14865,
           "imagepath":Img1
@@ -128,7 +129,7 @@ class Product extends React.Component {
           "manufacturer": "Saab",
           "model": "Aero",
           "variant":"2.3",
-          "color":"blue",
+          "color":"#8ed1fc",
           "mileage":106040,
           "price":275,
           "imagepath":Img2
@@ -139,7 +140,7 @@ class Product extends React.Component {
           "manufacturer": "Ford",
           "model": "Fiesta",
           "variant":"1.25",
-          "color":"silver",
+          "color":"#9900ef",
           "mileage":47000,
           "price":295,
           "imagepath":Img3
@@ -150,7 +151,7 @@ class Product extends React.Component {
           "manufacturer": "Ford",
           "model": "Ghia",
           "variant":"1.8",
-          "color":"grey",
+          "color":"#9900ef",
           "mileage":163292,
           "price":299,
           "imagepath":Img4
@@ -203,7 +204,7 @@ class Product extends React.Component {
       console.log('map each vehicle to component', item, key)
       items.push(
         <GridItem key={key} xs={12} sm={12} md={10} lg={8}>
-        <div style={{ padding: 20, marginBottom: 40 }}>
+        <div style={{ padding: 20, marginBottom: 40, marginTop: 20 }}>
               <Paper>
                 <Grid container>
                   <Grid item>
@@ -253,7 +254,7 @@ class Product extends React.Component {
       console.log('map each vehicle to component', item, key)
       items.push(
         <GridItem key={key} xs={12} sm={12} md={10} lg={8}>
-        <div style={{ padding: 20, marginBottom: 20 }}>
+        <div style={{ padding: 20, marginBottom: 60 }}>
               <Paper>
                 <Grid container>
                   <Grid item>
@@ -338,7 +339,18 @@ class Product extends React.Component {
     let min = newValue[0];
     let max = newValue[1];
     let vehicleslist = this.state.demolist;
-    const filteredlist = vehicleslist.filter(function(vehicle){ if (vehicleslist.price < max & vehicleslist.price > min) { return true; } else {return false; }})
+    const filteredlist = vehicleslist.filter(function(vehicle){ console.log(vehicle, max, min); if (vehicle.price < max & vehicle.price > min) { return true; } else {return false; }})
+    console.log('filtered list by price range', filteredlist);
+    this.setState({'vehicleslist':filteredlist});
+    this.state.vehicleslist = filteredlist;
+    this.resetVehicles();
+  }
+
+  filterVehicleByColor = (color) => {
+    console.log('get the current color', color);
+    let vehicleslist = this.state.demolist;
+    const filteredlist = vehicleslist.filter(function(vehicle){ console.log(vehicle); if (vehicle.Colour == color.hex) { return true; } else { return false; }});
+    console.log('check color is correct', filteredlist);
     this.setState({'vehicleslist':filteredlist});
     this.state.vehicleslist = filteredlist;
     this.resetVehicles();
@@ -361,7 +373,7 @@ class Product extends React.Component {
     return (
       <div className = "wrapper">
         <div className = "container2">
-          <div className = "container1" style={{ padding: 40 }}>
+          <div className = "container1" style={{ padding: 40, marginBottom:80 }}>
             <Paper>
               <GridContainer justify="left" style={{ padding: 40, marginBottom:80 }}>
                 <GridItem>
@@ -406,9 +418,10 @@ class Product extends React.Component {
               </GridItem>
               <GridItem>
               <InputLabel htmlFor="price">Price</InputLabel>
-
                 <Slider
-                  value={[10, 100000]}
+                  min = {0}
+                  max = {10000}
+                  value={[100, 5000]}
                   onChange={(event, value) => this.filterVehicleByPrice(event, value)}
                   valueLabelDisplay="auto"
                   aria-labelledby="range-slider"
@@ -417,13 +430,8 @@ class Product extends React.Component {
               <GridItem>
                 <FormControl className={classes.formControl}>
                   <InputLabel htmlFor="color">Colour</InputLabel>
-                  <ColorPicker
-                    name='color'
-                    defaultValue='#000'
-                    // value={this.state.color} - for controlled component
-                    onChange={color => console.log(color)}
-
-                    />
+                  <TwitterPicker
+                    onChangeComplete={ (val) => this.filterVehicleByColor(val) } />
                   </FormControl>
               </GridItem>
             </GridContainer>

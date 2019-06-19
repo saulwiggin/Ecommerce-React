@@ -34,6 +34,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-chartist": "0.13.1",
+    "react-color": "^2.17.3",
     "react-dom": "^16.7.0-alpha.2",
     "react-flags": "^0.1.18",
     "react-google-maps": "9.4.5",
