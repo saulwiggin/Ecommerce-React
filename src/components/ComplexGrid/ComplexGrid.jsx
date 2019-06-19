@@ -48,28 +48,29 @@ function ClickProductDescription(image){
 //   console.log(props.store.getState())
 // }
 
-// add filter
+// add test function
+function Welcome(props){
+  return <h1>Hello, props.name)</h1>
+}
 
 function ComplexGrid(props) {
-  const { classes, picture, data, store } = props;
-  console.log(props);
+  console.log('send data to component through props', props);
+  const { classes, picture, store } = props;
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Grid container spacing={16}>
           <Grid item>
-            <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="car" src={data.img}/>
+            <ButtonBase>
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={16}>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle1">
-                {data.make}
                 </Typography>
-                <Typography gutterBottom>{data.model}</Typography>
-                <Typography color="textSecondary">{data.reg}</Typography>
+                <Typography gutterBottom></Typography>
+                <Typography color="textSecondary"></Typography>
               </Grid>
               <Grid item>
                 <Typography style={{ cursor: 'pointer' }}>Add To Basket</Typography>
@@ -81,8 +82,8 @@ function ComplexGrid(props) {
                 </Grid>
             </Grid>
             <Grid item>
-            <Typography variant="subtitle1">{data.mileage}</Typography>
-              <Typography variant="subtitle1">{data.price}</Typography>
+            <Typography variant="subtitle1"></Typography>
+              <Typography variant="subtitle1"></Typography>
             </Grid>
             <Grid item>
             <Icon>arrow-circle-down </Icon>

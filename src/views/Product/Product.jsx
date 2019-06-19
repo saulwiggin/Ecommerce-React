@@ -18,6 +18,7 @@ import Accessibility from "@material-ui/icons/Accessibility";
 import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
+import ButtonBase from '@material-ui/core/ButtonBase';
 // core components
 import GridItem from "components/Grid/GridItem.jsx";
 import GridContainer from "components/Grid/GridContainer.jsx";
@@ -30,6 +31,7 @@ import CardHeader from "components/Card/CardHeader.jsx";
 import CardIcon from "components/Card/CardIcon.jsx";
 import CardBody from "components/Card/CardBody.jsx";
 import CardFooter from "components/Card/CardFooter.jsx";
+import Grid from '@material-ui/core/Grid';
 
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -49,6 +51,11 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Slider from '@material-ui/lab/Slider';
+
+import Img1 from 'assets/cars/img1.jpg';
+import Img2 from 'assets/cars/img2.jpg'
+import Img3 from 'assets/cars/img3.jpg'
+import Img4 from 'assets/cars/img4.jpg'
 
 import ComplexGrid from "components/ComplexGrid/ComplexGrid.jsx";
 import ProductDescription from "components/ComplexGrid/ComplexGrid.jsx";
@@ -85,6 +92,7 @@ const styles = theme => ({
   },
 });
 
+
   const middleware = [ thunk ];
 
   if(process.env.NODE_ENV !== 'production'){
@@ -94,10 +102,11 @@ const styles = theme => ({
 class Product extends React.Component {
   constructor(props){
     super(props);
-    console.log(props);
     let valuetext = 0;
     this.state = {
       products: [],
+      rowsPerPage:5,
+      page:1,
       anchorEl: null,
       vehicleslist: [
         {
@@ -109,7 +118,7 @@ class Product extends React.Component {
           "color":"grey",
           "mileage":2796,
           "price":14865,
-          "imagepath":"assets/img/img1.jpg"
+          "imagepath":Img1
         },
         {
           "id": 2,
@@ -120,7 +129,7 @@ class Product extends React.Component {
           "color":"blue",
           "mileage":106040,
           "price":275,
-          "imagepath":"assets/img/img2.jpg"
+          "imagepath":Img2
         },
         {
           "id": 3,
@@ -131,7 +140,7 @@ class Product extends React.Component {
           "color":"silver",
           "mileage":47000,
           "price":295,
-          "imagepath":"assets/img/img3.jpg"
+          "imagepath":Img3
         },
         {
           "id": 4,
@@ -142,7 +151,7 @@ class Product extends React.Component {
           "color":"grey",
           "mileage":163292,
           "price":299,
-          "imagepath":"assets/img/img4.jpg"
+          "imagepath":Img4
         }
       ]
     }
@@ -171,9 +180,10 @@ class Product extends React.Component {
 
   //fetch the data from the json server
    fetchData = () => {
-    fetch('http://localhost:2003/Vehicle')
+    fetch('http://localhost:3000/Vehicles')
     .then(results => results.json())
     .then((data) => {
+      console.log('return data from api', data);
       this.state.vehicleslist = data
       this.setState({vehicleslst: data})
       return data
@@ -183,15 +193,48 @@ class Product extends React.Component {
   createVehicles = () => {
     const items = [];
     let vehicles = this.fetchData();
-    let vehicleslist = vehicles.map((item, key) => {
+    let vehicleslist = this.state.vehicleslist.map((item, key) => {
+      console.log('map each vehicle to component', item, key)
       items.push(
-        <GridItem xs={12} sm={12} md={10} lg={8}>
-          <ComplexGrid props={item}>
-          </ComplexGrid>
+        <GridItem key={key} xs={12} sm={12} md={10} lg={8}>
+        <div style={{ padding: 20 }}>
+              <Paper>
+                <Grid container>
+                  <Grid item>
+                    <ButtonBase >
+                      <img alt="complex" src={item.imagepath} />
+                    </ButtonBase>
+                  </Grid>
+                  <Grid item xs={12} sm container>
+                    <Grid item xs container direction="column" spacing={2}>
+                      <Grid item xs>
+                        <Typography gutterBottom variant="subtitle1">
+                          {item.manufacturer} - {item.model} - {item.variant}
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          mileage: {item.mileage} - Registration {item.registration}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="body2" style={{ cursor: 'pointer' }}>
+                          color: {item.color}
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <Typography variant="subtitle1">£{item.price}</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </div>
         </GridItem>
       )
     })
-    return vehicleslist;
+    console.log('return the full vehiclelist compoent with data', items);
+    return items;
   }
 
    redirectProductDescription = (pic) => {
@@ -207,27 +250,33 @@ class Product extends React.Component {
   }
 
   filterVehicleByMake = (make) => {
+    console.log('filter by make', make);
     let vehicleslist = this.state.vehicleslist;
-    vehicleslist.filter(vehicleslist.manufacturer = make)
-    this.setState({"vehicle":vehicleslist});
+    const filteredlist = vehicleslist.filter(function(vehicle){ console.log(vehicle); if (vehicle.manufacturer.toLowerCase() == make.toLowerCase()){ return true; } else { return false; }});
+    console.log('filter vehicle list to show only make', filteredlist)
+    this.setState({"vehicleslist":filteredlist});
+    this.createVehicles();
   }
 
   filterVehicleByModel = (model) => {
+    //reset list
+    vehicleslist = this.fetchData();
+    console.log('reset to complete vehicleslist', vehicleslist);
     let vehicleslist = this.state.vehicleslist;
     vehicleslist.filter(vehicleslist.model = model)
-    this.setState({'vehicle':vehicleslist});
+    this.setState({'vehicleslist':vehicleslist});
   }
 
   filterVehicleByReg = (reg) => {
     let vehicleslist = this.state.vehicleslist;
     vehicleslist.filter(vehicleslist.registration = reg)
-    this.setState({'vehicle':vehicleslist});
+    this.setState({'vehicleslist':vehicleslist});
   }
 
   filterVehicleByColour = (color) => {
     let vehicleslist = this.state.vehicleslist;
     vehicleslist.filter(vehicleslist.color = color)
-    this.setState({'vehicle':vehicleslist});
+    this.setState({'vehicleslist':vehicleslist});
   }
 
   filterVehicleByPrice = (val) => {
@@ -235,7 +284,7 @@ class Product extends React.Component {
     let max = val.max;
     let vehicleslist = this.state.vehicleslist;
     vehicleslist.filter(vehicleslist.price < max & vehicleslist.price > min)
-    this.setState({'vehicle':vehicleslist});
+    this.setState({'vehicleslist':vehicleslist});
   }
 
   componentDidMount(props){
@@ -267,8 +316,10 @@ class Product extends React.Component {
       },
     ];
 
-    this.fetchdata();
-
+    this.fetchData();
+    console.log('check state contains vehicle list', this.state);
+    this.items = this.createVehicles();
+    console.log('display the list of vehicles component', this.items);
   }
 
   render() {
@@ -279,66 +330,60 @@ class Product extends React.Component {
     return (
       <div className = "wrapper">
         <div className = "container2">
-          <div className = "container1">
-          <GridContainer justify="center">
-          <Select onChange={(event) => this.filterVehicleByMake(event.target.value, event)}>
-            <MenuItem value="">
-              <em>Please Select:</em>
-            </MenuItem>
-            <MenuItem value='ford'>Ford</MenuItem>
-            <MenuItem value='seat'>Seat</MenuItem>
-            <MenuItem value='seat'>Saab</MenuItem>
-          </Select>
-          <Select onChange={(event) => this.filterVehicleByModel(event.target.value, event)}>
-            <MenuItem value="">
-              <em>Please Select:</em>
-            </MenuItem>
-            <MenuItem value='ford'>Aero</MenuItem>
-            <MenuItem value='seat'>Fiesta</MenuItem>
-            <MenuItem value='seat'>Ghia</MenuItem>
-          </Select>
-          <Select onChange={(event) => this.filterVehicleByModel(event.target.value, event)}>
-            <MenuItem value="">
-              <em>Please Select:</em>
-            </MenuItem>
-            <MenuItem value='ford'>Ford</MenuItem>
-            <MenuItem value='seat'>Seat</MenuItem>
-            <MenuItem value='seat'>Saab</MenuItem>
-          </Select>
-          <Slider
-            value='10'
-            onChange={(event) => this.filterVehicleByPrice(event.target.value, event)}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider"
-            getAriaValueText='price'
-          />
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="color">Colour</InputLabel>
-              <Select
-                value='color'
-                onChange={(event) => this.filterVehicleByColour(event.target.value, event)}
-                inputProps={{
-                  name: 'color',
-                  id: 'color-simple',
-                }}
-              >
+        <GridItem xs={12} sm={12} md={10} lg={8}>
+          <div className = "container1" style={{ padding: 20 }}>
+            <Paper>
+              <GridContainer justify="left">
+                <GridItem>
+                  <Select onChange={(event) => this.filterVehicleByMake(event.target.value, event)}>
+                  <MenuItem value="">
+                    <em>Please Select:</em>
+                  </MenuItem>
+                  <MenuItem value='ford'>Ford</MenuItem>
+                  <MenuItem value='seat'>Seat</MenuItem>
+                  <MenuItem value='seat'>Saab</MenuItem>
+                </Select>
+              </GridItem>
+              <GridItem>
+              <Select onChange={(event) => this.filterVehicleByModel(event.target.value, event)}>
+                <MenuItem value="">
+                  <em>Please Select:</em>
+                </MenuItem>
+                <MenuItem value='ford'>Aero</MenuItem>
+                <MenuItem value='seat'>Fiesta</MenuItem>
+                <MenuItem value='seat'>Ghia</MenuItem>
               </Select>
-            </FormControl>
+              </GridItem>
+              <GridItem>
+                <Slider
+                  value='10'
+                  onChange={(event) => this.filterVehicleByPrice(event.target.value, event)}
+                  valueLabelDisplay="auto"
+                  aria-labelledby="range-slider"
+                />
+              </GridItem>
+              <GridItem>
+                <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="color">Colour</InputLabel>
+                    <Select
+                      value='color'
+                      onChange={(event) => this.filterVehicleByColour(event.target.value, event)}
+                      inputProps={{
+                        name: 'color',
+                        id: 'color-simple',
+                      }}
+                    >
+                    </Select>
+                  </FormControl>
+              </GridItem>
+            </GridContainer>
+          </Paper>
             <GridItem xs={12} sm={12} md={10} lg={8}>
               <Paper className={classes.root}>
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
                   <TableBody>
-                    <GridItem xs={12} sm={12} md={10} lg={8}>
-                      <ComplexGrid>
-                      </ComplexGrid>
-                    </GridItem>
-                      {this.state.vehicles.map((vehicle) => (
-                      <GridItem xs={12} sm={12} md={10} lg={8}>
-                        <ComplexGrid>
-                        </ComplexGrid>
-                      </GridItem>
-                    ))}
+                    {this.items}
                   </TableBody>
                   <Popover
                    id="mouse-over-popover"
@@ -380,20 +425,20 @@ class Product extends React.Component {
                 </Table>
               </div>
             </Paper>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={10} lg={8}>
-                <div className={classes.root}>
-                  <GridList cellHeight={160} className={classes.gridList} cols={3}>
-                    {tileData.map(tile => (
-                      <GridListTile key={tile.img} cols={tile.cols || 1}>
-                        <img src={tile.img} alt={tile.title} />
-                      </GridListTile>
-                    ))}
-                  </GridList>
-                </div>
-                </GridItem>
-              </GridContainer>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={10} lg={8}>
+            <div className={classes.root}>
+              <GridList cellHeight={160} className={classes.gridList} cols={3}>
+                {this.state.vehicleslist.map(tile => (
+                  <GridListTile key={tile.img} cols={tile.cols || 1}>
+                    <img src={tile.img} alt={tile.title} />
+                  </GridListTile>
+                ))}
+              </GridList>
             </div>
+          </GridItem>
+          </div>
+          </GridItem>
         </div>
       </div>
     );
