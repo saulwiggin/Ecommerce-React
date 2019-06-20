@@ -253,7 +253,7 @@ class Product extends React.Component {
     let vehicleslist = this.state.demolist.map((item, key) => {
       console.log('map each vehicle to component', item, key)
       items.push(
-        <GridItem key={key} xs={12} sm={12} md={10} lg={8}>
+        <GridItem style={{padding:10}} key={key} xs={12} sm={12} md={10} lg={8}>
         <div style={{ padding: 20, marginBottom: 60 }}>
               <Paper>
                 <Grid container>
@@ -347,9 +347,9 @@ class Product extends React.Component {
   }
 
   filterVehicleByColor = (color) => {
-    console.log('get the current color', color);
+    console.log('get the current color', color.hex);
     let vehicleslist = this.state.demolist;
-    const filteredlist = vehicleslist.filter(function(vehicle){ console.log(vehicle); if (vehicle.Colour == color.hex) { return true; } else { return false; }});
+    const filteredlist = vehicleslist.filter(function(vehicle){ console.log(vehicle.color); if (vehicle.color == color.hex) { return true; } else { return false; }});
     console.log('check color is correct', filteredlist);
     this.setState({'vehicleslist':filteredlist});
     this.state.vehicleslist = filteredlist;
@@ -436,7 +436,7 @@ class Product extends React.Component {
               </GridItem>
             </GridContainer>
           </Paper>
-            <GridItem xs={12} sm={12} md={10} lg={8}>
+            <GridItem style={{margin:10}} xs={12} sm={12} md={10} lg={8}>
               <Paper className={classes.root}>
               <div className={classes.tableWrapper}>
                 <Table className={classes.table}>
